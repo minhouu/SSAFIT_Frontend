@@ -1,52 +1,50 @@
 <template>
-    <div>
+    <div v-if="!isEditing">
       <h2>게시글 상세 정보</h2>
-      <fieldset class="text-center">
-        <div>{{ article.title }}</div>
-        <div>{{ article.nickname }}</div>
-        <div>{{ article.viewCnt }}</div>
-        <div>{{ article.createdAt }}</div>
-        <div>{{ article.content }}</div>
+      <fieldset>
+        <div>{{ boardStore.article.title }}</div>
+        <div>{{ boardStore.article.nickname }}</div>
+        <div>{{ boardStore.article.viewCnt }}</div>
+        <div>{{ boardStore.article.createdAt }}</div>
+        <div>{{ boardStore.article.content }}</div>
+        <button v-if="boardStore.isEditor" @click="startEditing">수정하기</button>
       </fieldset>
     </div>
 
+    <div v-else>
+      <h2>게시글 수정</h2>
+      <fieldset>
+        <div>이름 : {{ boardStore.article.nickname }}</div>
+        <label for="title">제목</label>
+        <input type="text" id="title" v-model="boardStore.article.title" class="view" /><br />
+        <label for="content">내용</label>
+        <input type="text" id="content" v-model="boardStore.article.content" class="view" /><br />
+        <button class="btn" @click="boardStore.updateArticle()">수정</button>
+      </fieldset>
+    </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from '@/util/axios';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-
-const props = defineProps({
-    articles: Array,
-})
+import { useBoardStore } from '@/stores/board';
 
 const route = useRoute();
 
-const article = ref({});
+const boardStore = useBoardStore();
 
-const updateArticle = () => {
-  emit("update-article", article.value);
-};
-
-const deleteArticle = () => {
-  emit("delete-article", article.value);
-};
+const isEditing = ref(false);
 
 onMounted(() => {
   const articleId = route.params.id;
-  axios({
-    url: `board/${articleId}`,
-    method: "GET",
-  })
-    .then((res) => {
-      article.value = res.data;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  boardStore.getArticle(articleId);
 });
+
+const startEditing = () => {
+  isEditing.value = true;
+};
 </script>
+
 
 <style scoped>
 

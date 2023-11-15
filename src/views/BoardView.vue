@@ -1,11 +1,6 @@
 <template>
     <div>
-        <RouterView 
-            :articles="articles"
-            @create-article="createArticle" 
-            @update-article="updateArticle"
-            @delete-article="deleteArticle" 
-        />
+        <RouterView />
     </div>
 </template>
 
@@ -17,40 +12,7 @@ import axios from '@/util/axios';
 const router = useRouter();
 const articles = ref([]);
 
-// // 게시글 목록 조회
-// const getArticleList = () => {
-//     axios({
-//         url: "board",
-//         method: "GET",
-//     })
-//         .then((res) => {
-//             console.log(res.data);
-//             articles.value = res.data;
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// };
-// 게시글 등록
-const createArticle = (article) => {
-    axios({
-        url: "board",
-        method: "POST",
-        data: {
-            writerSeq: article.writerSeq,
-            title: article.title,
-            content: article.content,
-        },
-    })
-        .then(() => {
-            alert("등록 완료");
-            getArticleList();
-            router.push("/board");
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-};
+
 // 게시글 수정
 const updateArticle = (article) => {
     axios({
@@ -88,10 +50,6 @@ const deleteArticle = (article) => {
         });
 
 };
-// onMounted(() => {
-//     getArticleList();
-// });
-
 </script>
 
 <style scoped>

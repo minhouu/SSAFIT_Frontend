@@ -7,6 +7,7 @@ import BoardRegist from '@/components/board/BoardRegist.vue';
 import BoardDetail from '@/components/board/BoardDetail.vue';
 import User from "@/views/UserView.vue";
 import UserRegist from "@/components/user/UserRegist.vue";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

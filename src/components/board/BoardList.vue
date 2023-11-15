@@ -1,11 +1,11 @@
 <template>
-  <div class="container" v-if="store.user">
+  <div class="container" v-if="userStore.user">
     <h2>게시글 목록</h2>
     <div>
       <RouterLink to="/board/regist" >게시글 등록</RouterLink>
     </div>
     <hr>
-    <div v-if="articles.length">
+    <div v-if="boardStore.articleList.length">
       <table class="article-list">
         <colgroup>
           <col style="width: 20%" />
@@ -22,7 +22,7 @@
           </tr>
         </thead>
         <tbody>
-            <tr v-for="(article, index) in articles" :key="index" >
+            <tr v-for="(article, index) in boardStore.articleList" :key="index" >
               <td>
                 <RouterLink class="article-datail" :to="`/board/${article.articleId}`">
                   {{ article.title }}
@@ -41,35 +41,20 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import { useStore } from "@/stores/ssafit";
-import axios from "@/util/axios";
+import { onMounted } from "vue";
+import { useBoardStore } from "@/stores/board";
+import { useUserStore } from "@/stores/user";
 
-const store = useStore();
+const boardStore = useBoardStore();
 
-const articles = ref([]);
-
-// 게시글 목록 조회
-const getArticleList = () => {
-    axios({
-        url: "board",
-        method: "GET",
-    })
-        .then((res) => {
-            articles.value = res.data;
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-};
+const userStore = useUserStore();
 
 onMounted(() => {
-    getArticleList();
+  boardStore.getArticleList();
 }); 
-
 
 </script>
 
-<style  scoped>
+<style scoped>
 
 </style>
