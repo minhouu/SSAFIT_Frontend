@@ -19,6 +19,7 @@
             <th>작성자</th>
             <th>조회수</th>
             <th>작성일시</th>
+            <th>수정여부</th>
           </tr>
         </thead>
         <tbody>
@@ -31,6 +32,7 @@
               <td>{{ article.nickname }}</td>
               <td>{{ article.viewCnt }}</td>
               <td>{{ article.createdAt }}</td>
+              <td v-if="article.isEdited === 1">수정됨</td>
             </tr>
         </tbody>
       </table>

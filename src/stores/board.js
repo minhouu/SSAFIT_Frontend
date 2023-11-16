@@ -18,7 +18,6 @@ export const useBoardStore = defineStore('board', () => {
   });
 
   const updateArticle = () => {
-    console.log(article.value)
     axios({
       url : `board/${article.value.articleId}`,
       method: "PUT",
