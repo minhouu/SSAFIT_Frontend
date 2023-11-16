@@ -1,18 +1,10 @@
 <template>
   <div>
-    <RouterView
-      :users="users"
-      @create-user="createUser"
-      @update-user="updateUser"
-      @delete-user="deleteUser"
-    />
+    <RouterView/>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-
 </script>
 
 <style>

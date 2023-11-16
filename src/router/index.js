@@ -7,6 +7,7 @@ import BoardRegist from '@/components/board/BoardRegist.vue';
 import BoardDetail from '@/components/board/BoardDetail.vue';
 import User from "@/views/UserView.vue";
 import UserRegist from "@/components/user/UserRegist.vue";
+import UserDetail from "@/components/user/UserDetail.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,6 +53,11 @@ const router = createRouter({
           name: "UserRegist",
           component: UserRegist,
         },
+        {
+          path: "detail",
+          name: "UserDetail",
+          component: UserDetail,
+        }
       ],
     },
 

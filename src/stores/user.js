@@ -8,18 +8,53 @@ export const useUserStore = defineStore('user', () => {
 
   const user = ref(null);
 
-  const createUser = (user) => {
+  const checkBeforeCreate = (newUser) => {  
+    if (newUser.id === "") {
+      alert("아이디를 입력해주세요.");
+      return;
+    }
+    if (newUser.nickname === "") {
+      alert("닉네임을 입력해주세요.");
+      return;
+    }
+    if (newUser.password === "") {
+      alert("비밀번호를 입력해주세요.");
+      return;
+    }
+    if (newUser.password !== newUser.passwordCheck) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    if (newUser.age === 0) {
+      alert("나이를 입력해주세요.");
+      return;
+    }
     axios({
-      url: "user",
+      url: `user/${newUser.id}`,
+      method: "GET",
+    })
+    .then((res) => {
+      createUser(newUser);
+      alert("회원가입이 완료되었습니다. 새로 로그인 해주세요.");
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("아이디 중복");
+    })
+  }
+
+  const createUser = (newUser) => {
+    axios({
+      url: "user/join",
       method: "POST",
-      data : user
+      data : newUser
     })
       .then(() => {
-        alert("등록 완료");
-        router.push("/user");
+        router.push("/");
       })
       .catch((err) => {
         console.log(err);
+        alert("등록 실패");
       });
   };
 
@@ -50,8 +85,6 @@ export const useUserStore = defineStore('user', () => {
           user.value = {id: loginUser.id};
           user.value.nickname = res.data.nickname;
           user.value.userSeq = res.data.userSeq - 0;
-          console.log(res)
-          console.log(user)
           sessionStorage.setItem("access-token", res.data["access-token"])
           alert("로그인 성공");    
           router.push("/");
@@ -73,13 +106,13 @@ export const useUserStore = defineStore('user', () => {
         url: "user/logout",
     })
     .then(() => {
-        sessionStorage.removeItem("access-token");
+        sessionStorage.clear();
         alert("로그아웃 성공");
         router.push("/");
     })
   };
 
-  return { user, createUser, login, logout }
+  return { user, checkBeforeCreate, login, logout }
 }, { persist: {
   storage: sessionStorage,
 } })
