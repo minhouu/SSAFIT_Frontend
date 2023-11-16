@@ -80,4 +80,6 @@ export const useUserStore = defineStore('user', () => {
   };
 
   return { user, createUser, login, logout }
-}, { persist: true })
+}, { persist: {
+  storage: sessionStorage,
+} })

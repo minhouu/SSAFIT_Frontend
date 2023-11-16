@@ -18,10 +18,11 @@ export const useBoardStore = defineStore('board', () => {
   });
 
   const updateArticle = () => {
+    console.log(article.value)
     axios({
       url : `board/${article.value.articleId}`,
       method: "PUT",
-      data: article,
+      data: article.value,
     })
     .then((res) => {
       alert("수정 완료");
@@ -56,7 +57,6 @@ export const useBoardStore = defineStore('board', () => {
     })
       .then((res) => {
         articleList.value = res.data;
-        console.log(res.data)
       })
       .catch((err) => {
         console.log(err);
@@ -70,7 +70,6 @@ export const useBoardStore = defineStore('board', () => {
     })
       .then((res) => {
         article.value = res.data;
-        console.log(res.data)
       })
       .catch((err) => {
         console.log(err);
@@ -78,4 +77,6 @@ export const useBoardStore = defineStore('board', () => {
   }
 
   return { articleList, article, isEditor, createArticle, updateArticle, getArticleList, getArticle }
-}, { persist: true })
+}, { persist: {
+  storage: sessionStorage,
+}})
