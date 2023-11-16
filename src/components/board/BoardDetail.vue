@@ -8,6 +8,7 @@
         <div>{{ boardStore.article.createdAt }}</div>
         <div>{{ boardStore.article.content }}</div>
         <button v-if="boardStore.isEditor" @click="startEditing">수정하기</button>
+        <button v-if="boardStore.isEditor" @click="boardStore.deleteArticle()">삭제하기</button>
       </fieldset>
     </div>
 

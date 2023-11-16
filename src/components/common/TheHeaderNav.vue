@@ -5,10 +5,16 @@
                 <router-link to="/" class="logo">SSAFIT</router-link>
             </div>
             <div>
-                <a href="#" v-if="userStore.user" @click="userStore.logout()">로그아웃</a>
-                <router-link to="/login" v-else>로그인</router-link> |
-                <!-- <router-link :to="{name : 'Regist'}">회원가입</router-link> -->
-                <router-link to="/board">게시글 목록</router-link>
+                <div v-if="userStore.user">
+                    <router-link to="/board">게시글 목록</router-link> |
+                    <a href="#" @click="userStore.logout()">로그아웃</a> |
+                    <router-link :to="{name : 'UserDetail'}">내 정보</router-link>
+                </div>
+                <div v-else>
+                    <router-link to="/login">로그인</router-link> |
+                    <router-link :to="{name : 'UserRegist'}">회원가입</router-link>
+                </div>
+                
             </div>
         </nav>
 

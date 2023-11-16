@@ -33,7 +33,19 @@ export const useBoardStore = defineStore('board', () => {
   };
   
   const deleteArticle = () => {
-    emit("delete-article", article.value);
+    if (confirm("정말 게시글을 삭제하시겠습니까?")) {
+      axios({
+        url: `board/${article.value.articleId}`,
+        method: "DELETE",
+      })
+      .then((res) => {
+        alert("삭제 완료");
+        router.push("/board");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
   };
 
   const createArticle = (newArticle) => {
@@ -63,19 +75,36 @@ export const useBoardStore = defineStore('board', () => {
   };
 
   const getArticle = (id) => {
+    // get one article
     axios({
       url: `board/${id}`,
       method: "GET",
     })
       .then((res) => {
         article.value = res.data;
+        if (article.value.writerSeq != userStore.user.userSeq) {
+          increaseViewCount(id);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });    
+  }
+
+  const increaseViewCount = (id) => {
+    axios({
+      url: `board/${id}/view-cnt`,
+      method: "GET",
+    })
+      .then((res) => {
+        article.value.viewCnt++;
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  return { articleList, article, isEditor, createArticle, updateArticle, getArticleList, getArticle }
+  return { articleList, article, isEditor, createArticle, updateArticle, deleteArticle, getArticleList, getArticle }
 }, { persist: {
   storage: sessionStorage,
 }})
