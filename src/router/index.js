@@ -1,13 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 import LoginForm from '@/components/common/LoginForm.vue';
+
 import HomeView from '@/views/HomeView.vue';
+
 import BoardView from '@/views/BoardView.vue';
 import BoardList from '@/components/board/BoardList.vue';
 import BoardRegist from '@/components/board/BoardRegist.vue';
 import BoardDetail from '@/components/board/BoardDetail.vue';
-import User from "@/views/UserView.vue";
+
+import UserView from "@/views/UserView.vue";
 import UserRegist from "@/components/user/UserRegist.vue";
 import UserDetail from "@/components/user/UserDetail.vue";
+
+import VideoView from "@/views/VideoView.vue";
+import VideoList from "@/components/video/VideoList.vue";
+import VideoRegist from "@/components/video/VideoRegist.vue";
+import VideoDetail from "@/components/video/VideoDetail.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,12 +38,12 @@ const router = createRouter({
       children: [
         {
           path: "",
-          name: "List",
+          name: "BoardList",
           component: BoardList,
         }, 
         {
           path: ":id(\\d+)",
-          name: "Detail",
+          name: "BoardDetail",
           component: BoardDetail,
         },
         {
@@ -46,7 +55,8 @@ const router = createRouter({
     },
     {
       path: "/user",
-      component: User,
+      name: "User",
+      component: UserView,
       children: [
         {
           path: "regist",
@@ -60,7 +70,28 @@ const router = createRouter({
         }
       ],
     },
-
+    {
+      path: "/video",
+      name: "Video",
+      component: VideoView,
+      children: [
+        {
+          path : "", 
+          name : "VideoList", 
+          component : VideoList
+        },
+        {
+          path: "regist",
+          name: "VideoRegist",
+          component: VideoRegist,
+        },
+        {
+          path: ":id(\\d+)",
+          name: "VideoDetail",
+          component: VideoDetail,
+        }
+      ],
+    }
   ]
 })
 

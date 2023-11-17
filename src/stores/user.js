@@ -8,7 +8,7 @@ export const useUserStore = defineStore('user', () => {
 
   const user = ref(null);
 
-  const checkBeforeCreate = (newUser) => {  
+  const checkBeforeCreate = (newUser) => {
     if (newUser.id === "") {
       alert("아이디를 입력해주세요.");
       return;
@@ -33,21 +33,21 @@ export const useUserStore = defineStore('user', () => {
       url: `user/${newUser.id}`,
       method: "GET",
     })
-    .then((res) => {
-      createUser(newUser);
-      alert("회원가입이 완료되었습니다. 새로 로그인 해주세요.");
-    })
-    .catch((err) => {
-      console.log(err);
-      alert("아이디 중복");
-    })
+      .then((res) => {
+        createUser(newUser);
+        alert("회원가입이 완료되었습니다. 새로 로그인 해주세요.");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("아이디 중복");
+      })
   }
 
   const createUser = (newUser) => {
     axios({
       url: "user/join",
       method: "POST",
-      data : newUser
+      data: newUser
     })
       .then(() => {
         router.push("/");
@@ -59,12 +59,12 @@ export const useUserStore = defineStore('user', () => {
   };
 
   // api 추가 필요함
-  const deleteUser = (user) => { 
+  const deleteUser = (user) => {
     axios({
-    url : "user",
-    method : 'DELETE',
-  })
-  .then(() => {
+      url: "user",
+      method: 'DELETE',
+    })
+      .then(() => {
         alert("삭제 완료");
         getUserList();
         router.push("/user");
@@ -72,27 +72,27 @@ export const useUserStore = defineStore('user', () => {
       .catch((err) => {
         console.log(err);
       });
-  
+
   };
 
   const login = (loginUser) => {
     axios({
-          url: 'user/login',
-          method: 'POST',
-          data: loginUser
-      })
+      url: 'user/login',
+      method: 'POST',
+      data: loginUser
+    })
       .then((res) => {
-          user.value = {id: loginUser.id};
-          user.value.nickname = res.data.nickname;
-          user.value.userSeq = res.data.userSeq - 0;
-          sessionStorage.setItem("access-token", res.data["access-token"])
-          alert("로그인 성공");    
-          router.push("/");
+        user.value = { id: loginUser.id };
+        user.value.nickname = res.data.nickname;
+        user.value.userSeq = res.data.userSeq - 0;
+        sessionStorage.setItem("access-token", res.data["access-token"])
+        alert("로그인 성공");
+        router.push("/");
       })
       .catch((err) => {
-          console.log(err)
-          alert("로그인 실패");
-          router.push("login");
+        console.log(err)
+        alert("로그인 실패");
+        router.push("login");
       })
 
     user.id = "";
@@ -102,17 +102,19 @@ export const useUserStore = defineStore('user', () => {
   const logout = () => {
     user.value = null;
     axios({
-        method: "get",
-        url: "user/logout",
+      method: "get",
+      url: "user/logout",
     })
-    .then(() => {
+      .then(() => {
         sessionStorage.clear();
         alert("로그아웃 성공");
         router.push("/");
-    })
+      })
   };
 
   return { user, checkBeforeCreate, login, logout }
-}, { persist: {
-  storage: sessionStorage,
-} })
+}, {
+  persist: {
+    storage: sessionStorage,
+  }
+})

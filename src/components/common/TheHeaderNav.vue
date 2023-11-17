@@ -3,29 +3,26 @@
         <nav class="header-nav">
             <div class="header">
                 <div>
-                    <router-link to="/" class="logo">
+                    <RouterLink to="/" class="logo">
                         <img src="@\assets\logo_transparent.png" class="header-logo"/>
-                    </router-link>
+                    </RouterLink>
                 </div> 
                 <div>
                     <div v-if="userStore.user">
-                        <router-link to="/board">
-                            <button type="button" class="btn btn-primary btn-lg">게시글 목록</button>
-                        </router-link> |
+                        <RouterLink :to="{name : 'UserDetail'}">
+                            <button type="button" class="btn btn-primary btn-lg">내 정보</button>
+                        </RouterLink> |
                         <a href="#" @click="userStore.logout()">
                             <button type="button" class="btn btn-primary btn-lg">로그아웃</button>
-                        </a> |
-                        <router-link :to="{name : 'UserDetail'}">
-                            <button type="button" class="btn btn-primary btn-lg">내 정보</button>
-                        </router-link>
+                        </a> 
                     </div>
                     <div v-else>
-                        <router-link to="/login" >
+                        <RouterLink to="/login" >
                             <button type="button" class="btn btn-primary btn-lg">로그인</button>
-                        </router-link> |
-                        <router-link :to="{name : 'UserRegist'}">
+                        </RouterLink> |
+                        <RouterLink :to="{name : 'UserRegist'}">
                             <button type="button" class="btn btn-primary btn-lg">회원가입</button>
-                        </router-link>
+                        </RouterLink>
                     </div>
                 </div>               
             </div>
@@ -36,6 +33,7 @@
 
 <script setup>
 import { useUserStore } from '@/stores/user';
+import { RouterLink } from 'vue-router';
 
 const userStore = useUserStore();
 

@@ -7,15 +7,11 @@
       <br />
       <!-- <UserSearch /> -->
     </div>
-  </template>
+</template>
   
-  <script setup>
-  // import UserSearch from "@/components/user/UserSearch.vue";
+<script setup>
+const message = "홈입니다.";
+</script>
   
-  const message = "홈입니다.";
-  </script>
-  
-  <style>
-
-  </style>
-  
+<style >
+</style>
