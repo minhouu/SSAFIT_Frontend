@@ -22,14 +22,22 @@
     <fieldset>
       <div>작성자 : {{ videoStore.video.nickname }}</div>
       <label for="title">제목</label>
-      <input type="text" id="title" v-model="videoStore.video.title"/><br />
+      <input type="text" id="title" v-model="newVideo.title"/><br />
       <label for="content">내용</label>
-      <input type="text" id="content" v-model="videoStore.video.content"/><br />
-      <label for="video-key">비디오 키</label>
-      <input type="text" id="video-key" v-model="videoStore.video.videoKey"/><br />
+      <input type="text" id="content" v-model="newVideo.content"/><br />
+      <label for="url">영상 링크</label>
+      <input type="text" id="url" v-model="newVideo.url"/><br />
       <label for="part">부위</label>
-      <input type="text" id="part" v-model="videoStore.video.part"/><br />
-      <button class="btn" @click="videoStore.updateVideo()">수정</button>
+      <select id="part" v-model="newVideo.part">
+        <option value="abs">복근</option>
+        <option value="arm">팔</option>
+        <option value="back">등</option>
+        <option value="cardio">유산소</option>
+        <option value="chest">가슴</option>
+        <option value="leg">다리</option>
+        <option value="shoulder">어깨</option>
+      </select><br />
+      <button class="btn" @click="videoStore.updateVideo(newVideo)">수정</button>
     </fieldset>
   </div>
 </template>
@@ -45,6 +53,13 @@ const videoStore = useVideoStore();
 
 const isEditing = ref(false);
 
+const newVideo = ref({
+  title: '',
+  content: '',
+  url: '',
+  part: '',
+});
+
 onMounted(() => {
   const videoId = route.params.id;
   videoStore.getVideo(videoId);
@@ -52,6 +67,13 @@ onMounted(() => {
 
 const startEditing = () => {
   isEditing.value = true;
+  newVideo.value = {
+    videoId: videoStore.video.videoId,
+    title: videoStore.video.title,
+    content: videoStore.video.content,
+    url: videoStore.video.url,
+    part: videoStore.video.part,
+  };
 };
 
 const videoURL = computed(()=>{

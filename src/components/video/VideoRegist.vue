@@ -7,9 +7,9 @@
       <input type="text" id="title" v-model="video.title" class="view" /><br />
       <label for="content">내용</label>
       <input type="text" id="content" v-model="video.content" class="view" /><br />
-      <label for="video-key">VIDEO KEY</label>
-      <input type="text" id="video-key" v-model="video.videoKey" class="view" /><br />
-      <label for="part">VIDEO KEY</label>
+      <label for="url">유튜브 링크</label>
+      <input type="text" id="url" v-model="video.url" class="view" /><br />
+      <label for="part">부위</label>
       <select id="part" v-model="video.part">
         <option value="abs">복근</option>
         <option value="arm">팔</option>
@@ -38,7 +38,7 @@ const video = ref({
   writerSeq: userStore.user.userSeq,
   title: "",
   content: "",
-  videoKey: "",
+  url: "",
   part: "",
   nickname: userStore.user.nickname
 });

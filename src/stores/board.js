@@ -62,6 +62,7 @@ export const useBoardStore = defineStore('board', () => {
 
 
   const getArticleList = () => {
+    router.go(0);
     axios({
       url: `board`,
       method: "GET",

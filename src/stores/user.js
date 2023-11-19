@@ -82,6 +82,7 @@ export const useUserStore = defineStore('user', () => {
       data: loginUser
     })
       .then((res) => {
+        console.log(res.data)
         user.value = { id: loginUser.id };
         user.value.nickname = res.data.nickname;
         user.value.userSeq = res.data.userSeq - 0;

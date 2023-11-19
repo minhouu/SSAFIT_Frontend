@@ -44,12 +44,24 @@ export const useVideoStore = defineStore('video', () => {
   }
 
   const createVideo = (newVideo) => {
+    // 빈 요소 없는지 검증
+    for (const key in newVideo) {
+      if (newVideo[key] == "") return alert("모든 항목을 입력해주세요.");
+    }
+
+    // url에서 videoKey만 추출
+    const regex = /[?&]v=([^?&]+)/;
+    const key = newVideo.url.match(regex);
+    if (!key || key[1].length !== 11) return alert("유효하지 않은 URL입니다.");
+    newVideo.videoKey = key[1];
+
     axios({
       url: "video",
       method: "POST",
       data: newVideo
     })
       .then(() => {
+        alert("등록 완료");
         router.push("/video");
       })
       .catch((err) => {
@@ -74,12 +86,24 @@ export const useVideoStore = defineStore('video', () => {
     }
   };
 
-  const updateVideo = () => {
-    console.log(video.value)
+  const updateVideo = (newVideo) => {
+    console.log(newVideo)
+
+    // 빈 요소 없는지 검증
+    for (const key in newVideo) {
+      if (newVideo[key] == "") return alert("모든 항목을 입력해주세요.");
+    }
+
+    // url에서 videoKey만 추출
+    const regex = /[?&]v=([^?&]+)/;
+    const key = newVideo.url.match(regex);
+    if (!key || key[1].length !== 11) return alert("유효하지 않은 URL입니다.");
+    newVideo.videoKey = key[1];
+
     axios({
-      url: `video/${video.value.videoId}`,
+      url: `video`,
       method: "PUT",
-      data: video.value,
+      data: newVideo,
     })
       .then((res) => {
         alert("수정 완료");
