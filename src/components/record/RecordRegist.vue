@@ -61,8 +61,25 @@
         <label for="reps">횟수</label>
         <input type="text" id="reps" v-model="detail.reps" class="view" /><br />
         <!-- 등록하면 detalis에 추가하고 그 아래 details를 v-for 돌면서 리스트 보여주는 현황판?필요 -->
-        <button class="btn" @click="">등록</button>
+        <button class="btn" @click="submitUserExerciseSet">등록</button>
     </fieldset>
+    </div>
+    <div>
+      <!-- 이 안에 리스트 표기 -->
+      <div v-if="details.length > 0">
+        <h2>세트 정보 리스트</h2>
+        <ul>
+          <!-- details 배열을 순회하면서 각 세트 정보를 보여줍니다 -->
+          <li v-for="(item, index) in details" :key="index">
+            <!-- 운동 종목에 운동명을 문자로 넣어줄 메서드 필요-->
+            <p><strong>운동 종목:</strong> {{ item.exId }}</p>
+            <p><strong>세트:</strong> {{ item.setNum }}</p>
+            <p><strong>무게:</strong> {{ item.weight }}</p>
+            <p><strong>횟수:</strong> {{ item.reps }}</p>
+            <hr />
+          </li>
+        </ul>
+      </div>
     </div>
     <!-- 이 버튼을 누르면 그동안의 운동 기록 배열과 시작할때 나의 정보를 함께 보냄 -->
     <!-- 아까 닫아놨던 운동시작 전 회원의 신체정보를 담는 박스 차단 풀어줌 -->
@@ -100,14 +117,23 @@ const details = ref([]);
 
 const UserBodyInfoCheck = ref(true);
 
-
 const submitUserBodyInfo = function(){
     UserBodyInfoCheck.value = false;
 }
+const submitUserExerciseSet = function(){
+    // detail 객체를 details 배열에 추가
+    details.value.push({
+        exId: detail.exId,
+        setNum: detail.setNum,
+        weight: detail.weight,
+        reps: detail.reps
+    });
 
-const submitData = function(){
-    UserBodyInfoCheck.value = true;
-    UserBodyInfoCheck.value = true;
+    // detail 객체 초기화
+    detail.exId = "";
+    detail.setNum = "";
+    detail.weight = "";
+    detail.reps = "";
 }
 </script>
 
