@@ -89,7 +89,6 @@
 
 <script setup>
 import { ref } from "vue";
-
 import { useUserStore } from "@/stores/user";
 import { useRecordStore } from "@/stores/record";
 
