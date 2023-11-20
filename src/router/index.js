@@ -12,6 +12,11 @@ import BoardDetail from '@/components/board/BoardDetail.vue';
 import UserView from "@/views/UserView.vue";
 import UserRegist from "@/components/user/UserRegist.vue";
 import UserDetail from "@/components/user/UserDetail.vue";
+import Record from '@/views/RecordView.vue';
+import RecordList from '@/components/record/RecordList.vue';
+import RecordRegist from '@/components/record/RecordRegist.vue';
+import RecordPart from '@/components/record/RecordPart.vue';
+import RecordExercise from '@/components/record/RecordExercise.vue';
 
 import VideoView from "@/views/VideoView.vue";
 import VideoList from "@/components/video/VideoList.vue";
@@ -59,6 +64,7 @@ const router = createRouter({
       component: UserView,
       children: [
         {
+          //user의 회원 가입
           path: "regist",
           name: "UserRegist",
           component: UserRegist,
@@ -67,7 +73,37 @@ const router = createRouter({
           path: "detail",
           name: "UserDetail",
           component: UserDetail,
-        }
+        },
+      ],
+    },
+    {
+      path: "/record",
+      component: Record,
+      children: [
+        {
+          //record의 모든 정보
+          path: "",
+          name: "RecordList",
+          component: RecordList,
+        },
+        {
+          // record등록
+          path: "regist",
+          name: "RecordRegist",
+          component: RecordRegist,
+        },
+        {
+          // 해당 part의 record 보여주기
+          path: "part/:part",
+          name: "RecordPart",
+          component: RecordPart,
+        },
+        {
+          // 해당 exercise의 record 보여주기
+          path: "exercise/:id",
+          name: "RecordExercise",
+          component: RecordExercise,
+        },
       ],
     },
     {
