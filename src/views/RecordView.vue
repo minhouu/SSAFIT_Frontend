@@ -3,19 +3,15 @@
         <h2>운동 기록장 입니다.</h2>
         <nav>
             <router-link to="/record/regist">운동 기록하기</router-link> |
-            <router-link to="/record/part/back">운동 부위별 기록 보기</router-link> |
-            <router-link to="/record/exercise/1">운동별 기록 보기</router-link>
+            <router-link to="/record/part">운동 부위별 기록 보기</router-link> |
+            <router-link to="/record/exercise">운동별 기록 보기</router-link> |
+            <router-link to="/record/body">신체 변화 기록 보기</router-link>
         </nav>
-
         <RouterView />
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import axios from '@/util/axios';
-
 
 </script>
 

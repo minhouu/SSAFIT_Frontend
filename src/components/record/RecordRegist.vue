@@ -7,6 +7,12 @@
     <!-- 버튼에 사용자의 정보를 담는 이벤트 추가 -->
     <!-- 따로따로 해야하는지 고민 -->
       <fieldset class="text-center" v-if="UserBodyInfoCheck">
+        <label for="trainner">트레이너</label>
+        <select v-model="record.trainnerSeq">
+          <option v-for="trainer in recordStore.trainers" :key="trainer.userSeq" :value="trainer.userSeq">
+            {{ trainer.nickname }}
+          </option>
+        </select>
         <label for="bodyWeight">몸무게</label>
         <input type="text" id="bodyWeight" v-model="record.bodyWeight" class="view" /><br />
         <label for="bodyFatMass">체지방</label>
@@ -84,11 +90,11 @@
     <!-- 이 버튼을 누르면 그동안의 운동 기록 배열과 시작할때 나의 정보를 함께 보냄 -->
     <!-- 아까 닫아놨던 운동시작 전 회원의 신체정보를 담는 박스 차단 풀어줌 -->
     <!-- 그 후 detail, details, record 모두 초기화 -->
-    <button class="btn" @click="recordStore.createRecord(record,details)">등록 완료</button>
+    <button class="btn" @click="recordStore.createRecord(record)">등록 완료</button>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useUserStore } from "@/stores/user";
 import { useRecordStore } from "@/stores/record";
 
@@ -96,12 +102,10 @@ const userStore = useUserStore();
 
 const recordStore = useRecordStore();
 
-const record = ref({
-    userSeq: userStore.user.userSeq,
-    bodyWeight: "",
-    bodyFatMass: "",
-    skeletalMuscleMass: "",
-  });
+// 여기에 트레이너의 정보를 담을 배열 생성
+onMounted(() => {
+  recordStore.getTrainer();
+});
 
 
 const detail = ref({
@@ -114,6 +118,15 @@ const detail = ref({
 
 const details = ref([]);
 
+const record = ref({
+    userSeq: userStore.user.userSeq,
+    trainnerSeq: "",
+    bodyWeight: "",
+    bodyFatMass: "",
+    skeletalMuscleMass: "",
+    details: details.value
+  });
+
 const UserBodyInfoCheck = ref(true);
 
 const submitUserBodyInfo = function(){
@@ -122,10 +135,10 @@ const submitUserBodyInfo = function(){
 const submitUserExerciseSet = function(){
     // detail 객체를 details 배열에 추가
     details.value.push({
-        exId: detail.exId,
-        setNum: detail.setNum,
-        weight: detail.weight,
-        reps: detail.reps
+        exId: detail.value.exId,
+        setNum: detail.value.setNum,
+        weight: detail.value.weight,
+        reps: detail.value.reps
     });
 
     // detail 객체 초기화
@@ -134,6 +147,7 @@ const submitUserExerciseSet = function(){
     detail.weight = "";
     detail.reps = "";
 }
+
 </script>
 
 <style scoped>

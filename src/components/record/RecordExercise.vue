@@ -3,8 +3,8 @@
         <h2>운동별 기록</h2>
     </div>
     <div class="container" >
-      <h2>기록을 확인하고 싶은 운동을 선택하세요</h2>
-      <fieldset class="text-center">
+     <h2>기록을 확인하고 싶은 운동을 선택하세요</h2>
+     <fieldset class="text-center">
         <!-- recordId를 보여주면서? -->
         <!-- 운동 이름을 고르면 그 순서에 맞는 숫자를 운동 ID로 받아옴 -->
         <label for="exId">운동 목록</label>
@@ -35,41 +35,33 @@
             <option value="24">유산소</option>
         </select>
         <!-- 위에 정보를 들고 데이터를 받아옴 (userSeq, Exercise ID) -->
-        <button class="btn" @click="submitExerciseId(exId)">등록</button>
-    </fieldset>
+        <button class="btn" @click="recordStore.getIdExerciseList(exId)">선택</button>
+     </fieldset>
     </div>
     <div>
-        <!-- id 주면 운동이름 받아오는 메소드 필요 -->
-        <h2></h2>
         <ul>
           <!-- details 배열을 순회하면서 각 세트 정보를 보여줍니다 -->
-          <li v-for="(item, index) in details" :key="index">
-            <!-- 운동 종목에 운동명을 문자로 넣어줄 메서드 필요-->
-            <p><strong>운동 종목:</strong> {{ item.exId }}</p>
-            <p><strong>세트:</strong> {{ item.setNum }}</p>
-            <p><strong>무게:</strong> {{ item.weight }}</p>
-            <p><strong>횟수:</strong> {{ item.reps }}</p>
-            <hr />
+          <li v-for="(exercise, index) in recordStore.exerciseList" :key="index">
+            <p><strong>운동 종목:</strong> {{ exercise.exName}}</p>
+            <p><strong>세트:</strong> {{ exercise.setNum }}</p>
+            <p><strong>무게:</strong> {{ exercise.weight }}</p>
+            <p><strong>횟수:</strong> {{ exercise.reps }}</p>
+            <button class="btn" @click="recordStore.deleteRecord(exercise.recordId, exercise.detailId) ">삭제</button>
+            <!-- <button class="btn" @click=" ">삭제</button> -->
+            <hr/>
           </li>
         </ul>
-      </div>
+    </div>
 </template>
 
 <script setup>
-import { useUserStore } from "@/stores/user";
+import {ref} from "vue";
 import { useRecordStore } from "@/stores/record";
-
-const userStore = useUserStore();
 
 const recordStore = useRecordStore();
 
-const exId = ref();
+const exId = ref('');
 
-const details = ref([]);
-
-const submitExerciseId = function(arg){
-    details = recordStore.getIdExerciseList(userStore.user.userSeq, arg)
-}
 
 </script>
 

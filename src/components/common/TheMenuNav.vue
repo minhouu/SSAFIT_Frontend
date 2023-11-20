@@ -5,6 +5,9 @@
     </RouterLink> |
     <RouterLink to="/video" >
       <button type="button" class="btn btn-primary btn-lg">비디오 목록</button>
+    </RouterLink>|
+    <RouterLink to="/record" >
+      <button type="button" class="btn btn-primary btn-lg">운동 기록</button>
     </RouterLink>
   </div>
 </template>
