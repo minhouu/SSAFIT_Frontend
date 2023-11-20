@@ -1,21 +1,30 @@
 <template>
-    <header>
+    <header class="container">
         <nav class="header-nav">
-            <div>
-                <router-link to="/" class="logo">SSAFIT</router-link>
-            </div>
-            <div>
-                <div v-if="userStore.user">
-                    <router-link to="/board">게시글 목록</router-link> |
-                    <a href="#" @click="userStore.logout()">로그아웃</a> |
-                    <router-link :to="{name : 'UserDetail'}">내 정보</router-link> |
-                    <router-link to="/record">운동 기록</router-link>
-                </div>
-                <div v-else>
-                    <router-link to="/login">로그인</router-link> |
-                    <router-link :to="{name : 'UserRegist'}">회원가입</router-link>
-                </div>
-                
+            <div class="header">
+                <div>
+                    <RouterLink to="/" class="logo">
+                        <img src="@\assets\logo_transparent.png" class="header-logo"/>
+                    </RouterLink>
+                </div> 
+                <div>
+                    <div v-if="userStore.user">
+                        <RouterLink :to="{name : 'UserDetail'}">
+                            <button type="button" class="btn btn-primary btn-lg">내 정보</button>
+                        </RouterLink> |
+                        <a href="#" @click="userStore.logout()">
+                            <button type="button" class="btn btn-primary btn-lg">로그아웃</button>
+                        </a> 
+                    </div>
+                    <div v-else>
+                        <RouterLink to="/login" >
+                            <button type="button" class="btn btn-primary btn-lg">로그인</button>
+                        </RouterLink> |
+                        <RouterLink :to="{name : 'UserRegist'}">
+                            <button type="button" class="btn btn-primary btn-lg">회원가입</button>
+                        </RouterLink>
+                    </div>
+                </div>               
             </div>
         </nav>
 
@@ -24,6 +33,7 @@
 
 <script setup>
 import { useUserStore } from '@/stores/user';
+import { RouterLink } from 'vue-router';
 
 const userStore = useUserStore();
 
@@ -31,4 +41,17 @@ const userStore = useUserStore();
 
 <style scoped>
 
+
+.header {
+    height: 150px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px 10px 20px;
+}
+
+.header-logo {
+    width: 100px;
+    height: 100px;
+}
 </style>

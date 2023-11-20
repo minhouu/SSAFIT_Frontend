@@ -1,18 +1,15 @@
 <template>
   <div class="container" v-if="userStore.user">
-    <h2>게시글 목록</h2>
-    <div>
-      <RouterLink to="/board/regist" >게시글 등록</RouterLink>
+    <div class="board-list-top">
+      <h2>게시글 목록</h2>
+        <RouterLink to="/board/regist" >
+          <button type="button" class="btn btn-primary">새 글 쓰기</button>
+        </RouterLink>
     </div>
+    
     <hr>
     <div v-if="boardStore.articleList.length">
-      <table class="article-list">
-        <colgroup>
-          <col style="width: 20%" />
-          <col style="width: 20%" />
-          <col style="width: 20%" />
-          <col style="width: 30%" />
-        </colgroup>
+      <table class="table">
         <thead>
           <tr>
             <th>제목</th>
@@ -58,5 +55,9 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
+.board-list-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>
