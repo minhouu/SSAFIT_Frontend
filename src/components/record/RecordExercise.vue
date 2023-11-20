@@ -68,7 +68,7 @@ const exId = ref();
 const details = ref([]);
 
 const submitExerciseId = function(arg){
-    details = recordStore.getIdExerciseList(userStore.user.userSeq, arg)
+    details.value = recordStore.getIdExerciseList(userStore.user.userSeq, arg)
 }
 
 </script>

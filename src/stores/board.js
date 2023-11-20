@@ -13,6 +13,10 @@ export const useBoardStore = defineStore('board', () => {
 
   const article = ref({});
 
+  const articleCount = ref(0);
+
+  const page = ref(1);
+
   const isEditor = computed(() => {
     return article.value.writerSeq === userStore.user.userSeq;
   });
@@ -61,11 +65,13 @@ export const useBoardStore = defineStore('board', () => {
   };
 
 
-  const getArticleList = () => {
-    router.go(0);
+  const getArticleList = (pageNum) => {
     axios({
       url: `board`,
       method: "GET",
+      params: {
+        page: pageNum,
+      },
     })
       .then((res) => {
         articleList.value = res.data;
@@ -92,6 +98,19 @@ export const useBoardStore = defineStore('board', () => {
       });
   }
 
+  const getCount = () => {
+    axios({
+      url: `board/count`,
+      method: "GET",
+    })
+      .then((res) => {
+        articleCount.value = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   const increaseViewCount = (id) => {
     axios({
       url: `board/${id}/view-cnt`,
@@ -109,11 +128,14 @@ export const useBoardStore = defineStore('board', () => {
     articleList,
     article,
     isEditor,
+    page,
+    articleCount,
     createArticle,
     updateArticle, 
     deleteArticle, 
     getArticleList, 
-    getArticle
+    getArticle,
+    getCount,
   }
 }, {
   persist: {

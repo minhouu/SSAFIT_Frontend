@@ -17,7 +17,6 @@
             <th>부위</th>
             <th>조회수</th>
             <th>작성일시</th>
-            <th>수정여부</th>
           </tr>
         </thead>
         <tbody>
@@ -28,10 +27,9 @@
               </RouterLink>
             </td>
             <td>{{ video.nickname }}</td>
-            <td>{{ video.part }}</td>
+            <td>{{ partName[video.part] }}</td>
             <td>{{ video.viewCnt }}</td>
             <td>{{ video.createdAt }}</td>
-            <td v-if="video.isEdited === 1">수정됨</td>
           </tr>
         </tbody>
       </table>
@@ -53,6 +51,16 @@ const userStore = useUserStore();
 onMounted(() => {
   videoStore.getVideoList();
 });
+
+const partName = {
+  chest : "가슴",
+  back : "등",
+  shoulder : "어깨",
+  leg : "하체",
+  arm : "팔",
+  cardio : "유산소",
+  abs : "복근",
+}
 
 </script>
 

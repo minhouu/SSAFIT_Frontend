@@ -38,6 +38,11 @@ export const useVideoStore = defineStore('video', () => {
       .then((res) => {
         video.value = res.data;
       })
+      .then(() => {
+        if (video.value.writerSeq != userStore.user.userSeq) {
+          increaseViewCount(videoId);
+        }
+      })
       .catch((err) => {
         console.log(err);
       })
@@ -107,12 +112,25 @@ export const useVideoStore = defineStore('video', () => {
     })
       .then((res) => {
         alert("수정 완료");
-        router.push("/video");
+        router.go(0);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const increaseViewCount = (id) => {
+    axios({
+      url: `video/${id}/view-cnt`,
+      method: "GET",
+    })
+      .then((res) => {
+        video.value.viewCnt++;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return {
     videoList,
@@ -123,6 +141,7 @@ export const useVideoStore = defineStore('video', () => {
     createVideo,
     deleteVideo,
     updateVideo,
+    increaseViewCount,
   }
 }, {
   persist: {

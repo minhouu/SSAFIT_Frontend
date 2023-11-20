@@ -23,6 +23,9 @@ import VideoList from "@/components/video/VideoList.vue";
 import VideoRegist from "@/components/video/VideoRegist.vue";
 import VideoDetail from "@/components/video/VideoDetail.vue";
 
+import ReviewDetail from "@/components/video/review/ReviewDetail.vue";
+import ReviewRegist from "@/components/video/review/ReviewRegist.vue";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -127,6 +130,22 @@ const router = createRouter({
           component: VideoDetail,
         }
       ],
+    },
+    {
+      path: "/review",
+      name: "Review",
+      children : [
+        {
+          path: "regist/:videoId(\\d+)",
+          name: "ReviewRegist",
+          component: ReviewRegist,
+        },
+        {
+          path: ":id(\\d+)",
+          name: "ReviewDetail",
+          component: ReviewDetail,
+        },
+      ]
     }
   ]
 })

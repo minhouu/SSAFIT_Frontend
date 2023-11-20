@@ -1,5 +1,5 @@
 <template>
-  <div class="container" id="the-menu-nav">
+  <div id="the-menu-nav">
     <RouterLink to="/board">
       <button type="button" class="btn btn-primary btn-lg">게시글 목록</button>
     </RouterLink> |

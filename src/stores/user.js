@@ -82,7 +82,6 @@ export const useUserStore = defineStore('user', () => {
       data: loginUser
     })
       .then((res) => {
-        console.log(res.data)
         user.value = { id: loginUser.id };
         user.value.nickname = res.data.nickname;
         user.value.userSeq = res.data.userSeq - 0;
@@ -92,7 +91,7 @@ export const useUserStore = defineStore('user', () => {
       })
       .catch((err) => {
         console.log(err)
-        alert("로그인 실패");
+        alert("아이디와 비밀번호를 확인해주세요");
         router.push("login");
       })
 

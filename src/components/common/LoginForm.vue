@@ -1,15 +1,18 @@
 <template>
-<div class="container">
+  <div class="container">
+
     <h2>로그인</h2>
     <fieldset>
-      <label for="id">아이디</label>
-      <div class="input-group input-group-lg">
-        <input type="text" v-model="user.id" class="form-control" id="id">
+      <div class="mb-3">
+        <label class="form-label" for="id">아이디</label>
+        <input type="email" class="form-control" v-model="user.id" id="id">
       </div>
-      <label for="password">비밀번호</label>
-      <div class="input-group input-group-lg">
-        <input type="password" v-model="user.password" class="form-control" id="password">
+
+      <div class="mb-3">
+        <label class="form-label" for="password">비밀번호</label>
+        <input type="password" class="form-control" v-model="user.password" id="password">
       </div>
+
       <button type="button" class="btn btn-primary btn-lg" @click="userStore.login(user)">로그인</button>
     </fieldset>
   </div>
@@ -22,12 +25,10 @@ import { useUserStore } from "@/stores/user";
 const userStore = useUserStore();
 
 const user = ref({
-    id: "",
-    password: "",
-  });
+  id: "",
+  password: "",
+});
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
