@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>유저 상세정보</h2>
-    <fieldset class="text-center">
+    <fieldset>
       <label for="id">아이디</label>
       <div type="text" id="id" class="view">{{ userStore.user.id }}</div><br />
       <label for="name">닉네임</label>

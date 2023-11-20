@@ -20,7 +20,7 @@
       /><br />
       <label for="name">닉네임</label>
       <input type="text" id="name" v-model="user.nickname" class="view" /><br />
-      <label for="email">유저 타입</label>
+      <label for="type">유저 타입</label>
       <input type="email" id="email" v-model="user.userType" class="view" /><br />
       <label for="age">나이</label>
       <input type="number" id="age" v-model="user.age" class="view" /><br />
