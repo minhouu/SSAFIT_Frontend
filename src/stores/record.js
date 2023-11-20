@@ -38,7 +38,7 @@ export const useRecordStore = defineStore('record', () => {
       axios({
         url : `record/${exercise.recordId}/${exercise.detailId}`,
         method: "PUT",
-        data: exercise.value,
+        data: exercise,
         params: {
           "user-seq": userStore.user.userSeq
         }
