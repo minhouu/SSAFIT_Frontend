@@ -1,26 +1,55 @@
 <template>
-    <div>
-        <h2>신체 변화</h2>
-        <ul>
-          <!-- details 배열을 순회하면서 각 세트 정보를 보여줍니다 -->
-          <li v-for="(bodyInfo, index) in recordStore.bodyInfos" :key="index">
-            <p><strong>몸무게 : </strong> {{ bodyInfo.bodyWeight}}</p>
-            <p><strong>체지방량 : </strong> {{ bodyInfo.bodyFatMass }}</p>
-            <p><strong>골격근량 : </strong> {{ bodyInfo.skeletalMuscleMass }}</p>
-            <hr />
-          </li>
-        </ul>
-    </div>
+  <div>
+    <h2>신체 변화</h2>
+    <canvas id="myChartCanvas"></canvas>
+  </div>
+  
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useRecordStore } from "@/stores/record";
+import Chart from 'chart.js/auto';
 
 const recordStore = useRecordStore();
 
+const myChartCanvas = ref(null);
+
 onMounted(() => {
-    recordStore.getBodyWeightList();
+  // myChartCanvas.value에 차트 캔버스를 할당
+  myChartCanvas.value = document.getElementById('myChartCanvas');
+  // 차트 생성
+  if (myChartCanvas.value) {
+    console.log(recordStore.bodyInfos);
+    const newBodyWeightSet = recordStore.bodyInfos.map((v)=>v.bodyWeight);
+    const newBodyFatMassSet = recordStore.bodyInfos.map((v)=>v.bodyFatMass);
+    const newSkeletalMuscleMassSet = recordStore.bodyInfos.map((v)=>v.skeletalMuscleMass);
+    const newDateSet = recordStore.bodyInfos.map((v)=>v.recordDate);
+    const myChart = new Chart(myChartCanvas.value, {
+      type: 'line',
+      data: {
+        labels: newDateSet,
+        datasets: [
+          {
+            label: '몸무게',
+            borderColor: '#2ecc71',
+            data: newBodyWeightSet,
+          },
+          {
+            label: '체지방률',
+            borderColor: '#3498db',
+            data: newBodyFatMassSet,
+          },
+          {
+            label: '골격근량',
+            borderColor: '#f87979',
+            data: newSkeletalMuscleMassSet,
+          },
+        ],
+      },
+    });
+  }
+  recordStore.getBodyWeightList();
 });
 
 </script>

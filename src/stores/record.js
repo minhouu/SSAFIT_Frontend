@@ -11,9 +11,14 @@ export const useRecordStore = defineStore('record', () => {
     
     const trainers = ref([]);
 
+    // part와 exercise record 조회 전용 배열
     const exerciseList = ref([]);
 
+    // getBodyWeightList 전용 배열
     const bodyInfos = ref([]);
+
+    //전체 조회 전용 배열
+    const records = ref([]);
 
     //detail(운동 상세 정보)를 받아서 한번에 insert할 예정
     //운동 기록 생성
@@ -104,14 +109,30 @@ export const useRecordStore = defineStore('record', () => {
           }
         })
           .then((res) => {
-            exerciseList.value = res.data;  
+            records.value = res.data;  
           })
           .catch((err) => {
               console.log(err);
           });
-      };
+    };
     
-    
+    const getDetails = (recordId) => {
+      console.log(recordId);
+      axios({
+        url: `record/${recordId}`,
+        method: "GET",
+        params: {
+          "user-seq": userStore.user.userSeq
+        }
+      })
+        .then((res) => {
+          exerciseList.value = res.data;  
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    };
+
     // 1. 부위별 운동 목록
     const getPartExerciseList = (part) => {
       axios({
@@ -160,7 +181,6 @@ export const useRecordStore = defineStore('record', () => {
         })
           .then((res) => {
             bodyInfos.value = res.data;
-            console.log(bodyInfos.value);
           })
           .catch((err) => {
             console.log(err);
@@ -174,18 +194,15 @@ export const useRecordStore = defineStore('record', () => {
         method: "GET",
       })
         .then((res) => {
-          
           trainers.value = res.data
-          console.log(trainers.value);
         })
         .catch((err) => {
           console.log(err);
         });    
-  };
-    // select recordId 꼭 필요한가?
+      };
 
-
-    return { createRecord, updateRecord, deleteRecord, deleteAllRecord, getAllExerciseList, getPartExerciseList, getIdExerciseList, getBodyWeightList, getTrainer, trainers, exerciseList, bodyInfos}
+      //
+    return { createRecord, updateRecord, deleteRecord, deleteAllRecord, getAllExerciseList, getPartExerciseList, getIdExerciseList, getBodyWeightList, getTrainer, getDetails, trainers, exerciseList, bodyInfos, records}
   }, { persist: {
     storage: sessionStorage,
   }})

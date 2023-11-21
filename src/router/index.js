@@ -19,6 +19,7 @@ import RecordRegist from '@/components/record/RecordRegist.vue';
 import RecordPart from '@/components/record/RecordPart.vue';
 import RecordExercise from '@/components/record/RecordExercise.vue';
 import RecordBody from '@/components/record/RecordBodyInfo.vue';
+import RecordDetails from '@/components/record/RecordDetails.vue';
 
 import VideoView from "@/views/VideoView.vue";
 import VideoList from "@/components/video/VideoList.vue";
@@ -84,7 +85,7 @@ const router = createRouter({
       children: [
         {
           //record의 모든 정보
-          path: "",
+          path: "list",
           name: "RecordList",
           component: RecordList,
         },
@@ -111,6 +112,12 @@ const router = createRouter({
           path: "body",
           name: "RecordBody",
           component: RecordBody,
+        },
+        {
+          // 
+          path: "detail",
+          name: "RecordDetails",
+          component: RecordDetails,
         },
       ],
     },
