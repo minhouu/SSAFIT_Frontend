@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isEditing">
+  <div class="container" v-if="!isEditing">
     <h2>비디오 상세 정보</h2>
     <fieldset>
       <h3>{{ videoStore.video.title }}</h3>
@@ -15,6 +15,7 @@
       <button v-if="videoStore.isEditor" @click="startEditing">수정하기</button>
       <button v-if="videoStore.isEditor" @click="videoStore.deleteVideo()">삭제하기</button>
     </fieldset>
+    <ReviewList />
   </div>
 
   <div v-else>
@@ -46,6 +47,7 @@
 import { onMounted, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useVideoStore } from '@/stores/video';
+import ReviewList from './review/ReviewList.vue';
 
 const route = useRoute();
 

@@ -1,57 +1,46 @@
 <template>
     <header class="container">
-        <nav class="header-nav">
-            <div class="header">
-                <div>
-                    <RouterLink to="/" class="logo">
-                        <img src="@\assets\logo_transparent.png" class="header-logo"/>
-                    </RouterLink>
-                </div> 
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" id="the-header">
+            <div class="container-fluid">
+                <RouterLink class="navbar-brand" to="/">
+                    <!-- <img src="@\assets\logo_transparent.png" class="header-logo"/> -->
+                    <h1>SSAFIT</h1>
+                </RouterLink>
                 <div>
                     <div v-if="userStore.user">
-                        <RouterLink :to="{name : 'UserDetail'}">
-                            <button type="button" class="btn btn-primary btn-lg">내 정보</button>
+                        <RouterLink :to="{ name: 'UserDetail' }">
+                            <button type="button" class="btn btn-secondary">내 정보</button>
                         </RouterLink> |
                         <a href="#" @click="userStore.logout()">
-                            <button type="button" class="btn btn-primary btn-lg">로그아웃</button>
-                        </a> 
+                            <button type="button" class="btn btn-secondary">로그아웃</button>
+                        </a>
                     </div>
                     <div v-else>
-                        <RouterLink to="/login" >
-                            <button type="button" class="btn btn-primary btn-lg">로그인</button>
+                        <RouterLink to="/login">
+                            <button type="button" class="btn btn-secondary">로그인</button>
                         </RouterLink> |
-                        <RouterLink :to="{name : 'UserRegist'}">
-                            <button type="button" class="btn btn-primary btn-lg">회원가입</button>
+                        <RouterLink :to="{ name: 'UserRegist' }">
+                            <button type="button" class="btn btn-secondary">회원가입</button>
                         </RouterLink>
                     </div>
-                </div>               
+                </div>
             </div>
         </nav>
-
+        <TheMenuNav />
     </header>
 </template>
 
 <script setup>
 import { useUserStore } from '@/stores/user';
 import { RouterLink } from 'vue-router';
+import TheMenuNav from './TheMenuNav.vue';
 
 const userStore = useUserStore();
 
 </script>
 
 <style scoped>
-
-
-.header {
-    height: 150px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px 10px 20px;
-}
-
-.header-logo {
-    width: 100px;
-    height: 100px;
+#the-header {
+    margin-bottom: 40px;
 }
 </style>

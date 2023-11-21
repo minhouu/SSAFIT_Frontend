@@ -1,23 +1,41 @@
 <template>
-  <div class="container" id="the-menu-nav">
-    <RouterLink to="/board">
-      <button type="button" class="btn btn-primary btn-lg">게시글 목록</button>
-    </RouterLink> |
-    <RouterLink to="/video" >
-      <button type="button" class="btn btn-primary btn-lg">비디오 목록</button>
-    </RouterLink>|
-    <RouterLink to="/record" >
-      <button type="button" class="btn btn-primary btn-lg">운동 기록</button>
-    </RouterLink>
-  </div>
+  <ul style="margin-bottom: 40px;" class="nav nav-tabs">
+    <li class="nav-item">
+      <RouterLink :class="{active : board}" class="nav-link nav-setsize" to="/board">BOARD</RouterLink> 
+    </li>
+    <li class="nav-item">
+      <RouterLink :class="{active : video}" class="nav-link nav-setsize" to="/video">VIDEO</RouterLink> 
+    </li>
+    <li class="nav-item">
+      <RouterLink :class="{active : record}" class="nav-link nav-setsize" to="/record">RECORD</RouterLink> 
+    </li>
+  </ul>
+
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+const board = computed(() => {
+  return route.path.startsWith('/board')
+})
+const video = computed(() => {
+  return route.path.startsWith('/video') || route.path.startsWith('/review')
+})
+const record = computed(() => {
+  return route.path.startsWith('/record')
+})
+
+
 </script>
 
 <style scoped>
-#the-menu-nav {
-  margin-bottom: 40px;
+.nav-setsize {
+  font-size: 1.8rem;
+  padding: 0.7rem 2rem;
 }
 </style>

@@ -5,6 +5,9 @@ import { useUserStore } from './user'
 import axios from '@/util/axios'
 
 export const useBoardStore = defineStore('board', () => {
+  /*
+  states
+  */
   const router = useRouter();
 
   const userStore = useUserStore();
@@ -13,9 +16,97 @@ export const useBoardStore = defineStore('board', () => {
 
   const article = ref({});
 
+  const page = ref(1);
+
+  const totalPage = ref(1);
+
+  /*
+  getters
+  */
   const isEditor = computed(() => {
     return article.value.writerSeq === userStore.user.userSeq;
   });
+
+  /*
+  actions
+  */
+  const createArticle = (newArticle) => {
+    // 빈 요소 없는지 검증
+    for (const key in newArticle) {
+      if (newArticle[key] === "") return alert("모든 항목을 입력해주세요.");
+    }
+    if (newArticle.content.length < 10) return alert("내용은 10자 이상 입력해주세요.");
+    if (newArticle.title.length < 5) return alert("제목은 5자 이상 입력해주세요.");
+
+    axios({
+      url: "board",
+      method: "POST",
+      data: newArticle,
+    })
+      .then((res) => {
+        alert("등록 완료");
+        router.push("/board");
+      })
+  };
+
+  const getArticleList = (pageNum) => {
+    axios({
+      url: `board`,
+      method: "GET",
+      params: {
+        page: pageNum,
+      },
+    })
+      .then((res) => {
+        articleList.value = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getArticle = (id) => {
+    // get one article
+    axios({
+      url: `board/${id}`,
+      method: "GET",
+    })
+      .then((res) => {
+        article.value = res.data;
+        if (article.value.writerSeq != userStore.user.userSeq) {
+          increaseViewCount(id);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const getCount = () => {
+    axios({
+      url: `board/count`,
+      method: "GET",
+    })
+      .then((res) => {
+        totalPage.value = Math.ceil(res.data / 10);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const increaseViewCount = (id) => {
+    axios({
+      url: `board/${id}/view-cnt`,
+      method: "GET",
+    })
+      .then((res) => {
+        article.value.viewCnt++;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   const updateArticle = () => {
     axios({
@@ -48,72 +139,18 @@ export const useBoardStore = defineStore('board', () => {
     }
   };
 
-  const createArticle = (newArticle) => {
-    axios({
-      url: "board",
-      method: "POST",
-      data: newArticle,
-    })
-      .then((res) => {
-        alert("등록 완료");
-        router.push("/board");
-      })
-  };
-
-
-  const getArticleList = () => {
-    router.go(0);
-    axios({
-      url: `board`,
-      method: "GET",
-    })
-      .then((res) => {
-        articleList.value = res.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const getArticle = (id) => {
-    // get one article
-    axios({
-      url: `board/${id}`,
-      method: "GET",
-    })
-      .then((res) => {
-        article.value = res.data;
-        if (article.value.writerSeq != userStore.user.userSeq) {
-          increaseViewCount(id);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  const increaseViewCount = (id) => {
-    axios({
-      url: `board/${id}/view-cnt`,
-      method: "GET",
-    })
-      .then((res) => {
-        article.value.viewCnt++;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   return {
     articleList,
     article,
     isEditor,
+    page,
+    totalPage,
     createArticle,
-    updateArticle, 
-    deleteArticle, 
-    getArticleList, 
-    getArticle
+    updateArticle,
+    deleteArticle,
+    getArticleList,
+    getArticle,
+    getCount,
   }
 }, {
   persist: {
