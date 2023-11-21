@@ -7,7 +7,6 @@
 
 <script setup>
 import TheHeaderNav from '@/components/common/TheHeaderNav.vue';
-import TheMenuNav from '@/components/common/TheMenuNav.vue';
 
 </script>
 

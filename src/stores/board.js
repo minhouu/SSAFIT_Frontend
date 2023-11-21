@@ -5,6 +5,9 @@ import { useUserStore } from './user'
 import axios from '@/util/axios'
 
 export const useBoardStore = defineStore('board', () => {
+  /*
+  states
+  */
   const router = useRouter();
 
   const userStore = useUserStore();
@@ -13,46 +16,28 @@ export const useBoardStore = defineStore('board', () => {
 
   const article = ref({});
 
-  const articleCount = ref(0);
-
   const page = ref(1);
 
+  const totalPage = ref(1);
+
+  /*
+  getters
+  */
   const isEditor = computed(() => {
     return article.value.writerSeq === userStore.user.userSeq;
   });
 
-  const updateArticle = () => {
-    axios({
-      url: `board/${article.value.articleId}`,
-      method: "PUT",
-      data: article.value,
-    })
-      .then((res) => {
-        alert("수정 완료");
-        router.push("/board");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const deleteArticle = () => {
-    if (confirm("정말 게시글을 삭제하시겠습니까?")) {
-      axios({
-        url: `board/${article.value.articleId}`,
-        method: "DELETE",
-      })
-        .then((res) => {
-          alert("삭제 완료");
-          router.push("/board");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
+  /*
+  actions
+  */
   const createArticle = (newArticle) => {
+    // 빈 요소 없는지 검증
+    for (const key in newArticle) {
+      if (newArticle[key] === "") return alert("모든 항목을 입력해주세요.");
+    }
+    if (newArticle.content.length < 10) return alert("내용은 10자 이상 입력해주세요.");
+    if (newArticle.title.length < 5) return alert("제목은 5자 이상 입력해주세요.");
+
     axios({
       url: "board",
       method: "POST",
@@ -63,7 +48,6 @@ export const useBoardStore = defineStore('board', () => {
         router.push("/board");
       })
   };
-
 
   const getArticleList = (pageNum) => {
     axios({
@@ -104,7 +88,7 @@ export const useBoardStore = defineStore('board', () => {
       method: "GET",
     })
       .then((res) => {
-        articleCount.value = res.data;
+        totalPage.value = Math.ceil(res.data / 10);
       })
       .catch((err) => {
         console.log(err);
@@ -124,16 +108,47 @@ export const useBoardStore = defineStore('board', () => {
       });
   }
 
+  const updateArticle = () => {
+    axios({
+      url: `board/${article.value.articleId}`,
+      method: "PUT",
+      data: article.value,
+    })
+      .then((res) => {
+        alert("수정 완료");
+        router.push("/board");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const deleteArticle = () => {
+    if (confirm("정말 게시글을 삭제하시겠습니까?")) {
+      axios({
+        url: `board/${article.value.articleId}`,
+        method: "DELETE",
+      })
+        .then((res) => {
+          alert("삭제 완료");
+          router.push("/board");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   return {
     articleList,
     article,
     isEditor,
     page,
-    articleCount,
+    totalPage,
     createArticle,
-    updateArticle, 
-    deleteArticle, 
-    getArticleList, 
+    updateArticle,
+    deleteArticle,
+    getArticleList,
     getArticle,
     getCount,
   }

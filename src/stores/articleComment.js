@@ -28,6 +28,10 @@ export const useCommentStore = defineStore('comment', () => {
   }
 
   const createComment = (newComment) => {
+    if (!newComment.content) return alert("내용을 입력해주세요.");
+    if (newComment.content.length > 254 ) return alert("내용은 250자 이내로 입력해주세요.");
+    if (!userStore.user) return alert("로그인 후 이용해주세요.");
+
     newComment.writerSeq = userStore.user.userSeq;
     axios({
       url: "comment",

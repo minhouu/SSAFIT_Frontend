@@ -8,31 +8,61 @@
     </div>
 
     <hr>
-    <div v-if="videoStore.videoList.length">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>부위</th>
-            <th>조회수</th>
-            <th>작성일시</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(video, index) in videoStore.videoList" :key="index">
-            <td>
-              <RouterLink :to="`/video/${video.videoId}`">
+
+    <div class="container" v-if="videoStore.videoList.length">
+      <div class="video-card-store">
+        <div v-for="(video, index) in videoStore.videoList" :key="index" class="card"
+          style="width: 30%; margin-top: 20px;">
+          <RouterLink class="nav-link active" :to="`/video/${video.videoId}`">
+            <img :src="`https://img.youtube.com/vi/${video.videoKey}/mqdefault.jpg`" class="card-img-top img-thumbnail" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">
+                <!-- <RouterLink class="nav-link active" :to="`/video/${video.videoId}`">{{ video.title }}</RouterLink> -->
                 {{ video.title }}
-              </RouterLink>
-            </td>
-            <td>{{ video.nickname }}</td>
-            <td>{{ partName[video.part] }}</td>
-            <td>{{ video.viewCnt }}</td>
-            <td>{{ video.createdAt }}</td>
-          </tr>
-        </tbody>
-      </table>
+              </h5>
+              <p class="card-text"></p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item card-item-text">
+                <div class="card-item-text-header bg-light text-dark rounded">이름</div>
+                <div>{{ video.nickname }}</div>
+              </li>
+              <li class="list-group-item card-item-text">
+                <div class="card-item-text-header bg-light text-dark rounded">부위</div>
+                <div>{{ partName[video.part] }}</div>
+              </li>
+              <li class="list-group-item card-item-text">
+                <div class="card-item-text-header bg-light text-dark rounded">조회수</div>
+                <div>{{ video.viewCnt }}</div>
+              </li>
+              <li class="list-group-item card-item-text">
+                <div class="card-item-text-header bg-light text-dark rounded">작성 시간</div>
+                <div>{{ dateParser.formatDate(video.createdAt) }}</div>
+              </li>
+            </ul>
+          </RouterLink>
+        </div>
+      </div>
+      <hr>
+      <ul class="pagination">
+        <li class="page-item"><button :class="{ 'disabled': 1 === videoStore.page }" class="page-link"
+            @click="setPage(videoStore.page - 1)">이전</button></li>
+        <li class="page-item"><button v-if="videoStore.page - 2 > 0" class="page-link"
+            @click="setPage(videoStore.page - 2)">{{ videoStore.page - 2 }}</button></li>
+        <li class="page-item"><button v-if="videoStore.page - 1 > 0" class="page-link"
+            @click="setPage(videoStore.page - 1)">{{ videoStore.page - 1 }}</button></li>
+        <li class="page-item"><button class="page-link active" @click="setPage(videoStore.page)">{{ videoStore.page
+        }}</button>
+        </li>
+        <li class="page-item"><button v-if="videoStore.page + 1 <= videoStore.totalPage" class="page-link"
+            @click="setPage(videoStore.page + 1)">{{ videoStore.page + 1
+            }}</button></li>
+        <li class="page-item"><button v-if="videoStore.page + 2 <= videoStore.totalPage" class="page-link"
+            @click="setPage(videoStore.page + 2)">{{ videoStore.page + 2
+            }}</button></li>
+        <li class="page-item"><button :class="{ 'disabled': videoStore.totalPage === videoStore.page }" class="page-link"
+            @click="setPage(videoStore.page + 1)">다음</button></li>
+      </ul>
     </div>
     <div v-else>등록된 비디오가 없습니다.</div>
   </div>
@@ -41,27 +71,43 @@
 
 <script setup>
 import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { useVideoStore } from "@/stores/video";
 import { useUserStore } from "@/stores/user";
+import { useDateParserStore } from '@/stores/dateParser';
+
+const router = useRouter();
 
 const videoStore = useVideoStore();
-
 const userStore = useUserStore();
-
-onMounted(() => {
-  videoStore.getVideoList();
-});
+const dateParser = useDateParserStore();
 
 const partName = {
-  chest : "가슴",
-  back : "등",
-  shoulder : "어깨",
-  leg : "하체",
-  arm : "팔",
-  cardio : "유산소",
-  abs : "복근",
+  chest: "가슴",
+  back: "등",
+  shoulder: "어깨",
+  leg: "하체",
+  arm: "팔",
+  cardio: "유산소",
+  abs: "복근",
 }
 
+onMounted(() => {
+  videoStore.getVideoList(videoStore.page);
+  videoStore.getCount();
+});
+
+const setPage = (pageNum) => {
+  if (pageNum < 1) return alert("첫 페이지 입니다.");
+  // board 최대페이지 로직 추가필요
+
+  videoStore.getCount();
+  if (pageNum > videoStore.totalPage) return alert("마지막 페이지 입니다.");
+
+  videoStore.page = pageNum;
+  videoStore.getVideoList(videoStore.page);
+  router.go(0);
+};
 </script>
 
 <style scoped>
@@ -69,5 +115,30 @@ const partName = {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.pagination {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.video-card-store {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card-item-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-item-text-header {
+  width: 30%;
+  text-align: center;
+  padding: 5px;
+  margin: 3px;
 }
 </style>

@@ -5,6 +5,9 @@ import { useUserStore } from './user'
 import axios from '@/util/axios'
 
 export const useVideoStore = defineStore('video', () => {
+  /* 
+  states 
+  */
   const router = useRouter();
 
   const userStore = useUserStore();
@@ -13,41 +16,20 @@ export const useVideoStore = defineStore('video', () => {
 
   const video = ref({});
 
+  const page = ref(1);
+
+  const totalPage = ref(1);
+
+  /*
+  getters
+  */
   const isEditor = computed(() => {
     return video.value.writerSeq === userStore.user.userSeq;
   });
 
-  const getVideoList = () => {
-    axios({
-      url: "video",
-      method: "GET",
-    })
-      .then((res) => {
-        videoList.value = res.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }
-
-  const getVideo = (videoId) => {
-    axios({
-      url: `video/${videoId}`,
-      method: "GET",
-    })
-      .then((res) => {
-        video.value = res.data;
-      })
-      .then(() => {
-        if (video.value.writerSeq != userStore.user.userSeq) {
-          increaseViewCount(videoId);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }
-
+  /*
+  actions
+  */
   const createVideo = (newVideo) => {
     // 빈 요소 없는지 검증
     for (const key in newVideo) {
@@ -75,21 +57,65 @@ export const useVideoStore = defineStore('video', () => {
       });
   };
 
-  const deleteVideo = () => {
-    if (confirm("정말 게시글을 삭제하시겠습니까?")) {
-      axios({
-        url: `video/${video.value.videoId}`,
-        method: "DELETE",
+  const getVideoList = (pageNum) => {
+    axios({
+      url: "video",
+      method: "GET",
+      params: {
+        page: pageNum,
+      },
+    })
+      .then((res) => {
+        videoList.value = res.data;
       })
-        .then((res) => {
-          alert("삭제 완료");
-          router.push("/video");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  const getVideo = (videoId) => {
+    axios({
+      url: `video/${videoId}`,
+      method: "GET",
+    })
+      .then((res) => {
+        video.value = res.data;
+      })
+      .then(() => {
+        if (video.value.writerSeq != userStore.user.userSeq) {
+          increaseViewCount(videoId);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  const getCount = () => {
+    axios({
+      url: `video/count`,
+      method: "GET",
+    })
+      .then((res) => {
+        totalPage.value = Math.ceil(res.data / 6);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const increaseViewCount = (id) => {
+    axios({
+      url: `video/${id}/view-cnt`,
+      method: "GET",
+    })
+      .then((res) => {
+        video.value.viewCnt++;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   const updateVideo = (newVideo) => {
     console.log(newVideo)
@@ -119,29 +145,35 @@ export const useVideoStore = defineStore('video', () => {
       });
   };
 
-  const increaseViewCount = (id) => {
-    axios({
-      url: `video/${id}/view-cnt`,
-      method: "GET",
-    })
-      .then((res) => {
-        video.value.viewCnt++;
+  const deleteVideo = () => {
+    if (confirm("정말 게시글을 삭제하시겠습니까?")) {
+      axios({
+        url: `video/${video.value.videoId}`,
+        method: "DELETE",
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+        .then((res) => {
+          alert("삭제 완료");
+          router.push("/video");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   return {
     videoList,
     video,
     isEditor,
+    page,
+    totalPage,
+    createVideo,
     getVideoList,
     getVideo,
-    createVideo,
-    deleteVideo,
-    updateVideo,
+    getCount,
     increaseViewCount,
+    updateVideo,
+    deleteVideo,
   }
 }, {
   persist: {
