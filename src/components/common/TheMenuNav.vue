@@ -6,7 +6,11 @@
     <li class="nav-item">
       <RouterLink :class="{active : video}" class="nav-link nav-setsize" to="/video">VIDEO</RouterLink> 
     </li>
+    <li class="nav-item">
+      <RouterLink :class="{active : record}" class="nav-link nav-setsize" to="/record">RECORD</RouterLink> 
+    </li>
   </ul>
+
 </template>
 
 <script setup>
@@ -21,6 +25,9 @@ const board = computed(() => {
 })
 const video = computed(() => {
   return route.path.startsWith('/video') || route.path.startsWith('/review')
+})
+const record = computed(() => {
+  return route.path.startsWith('/record')
 })
 
 

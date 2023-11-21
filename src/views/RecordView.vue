@@ -1,21 +1,18 @@
 <template>
     <div>
-        <h2>운동 기록장 입니다.</h2>
+        <h2>운동LOG</h2>
         <nav>
-            <router-link to="/record/regist">운동 기록하기</router-link> |
-            <router-link to="/record/part/back">운동 부위별 기록 보기</router-link> |
-            <router-link to="/record/exercise/1">운동별 기록 보기</router-link>
+            <router-link to="/record/list">나의 운동 LOG</router-link> |
+            <router-link to="/record/regist">기록하기</router-link> |
+            <router-link to="/record/part">부위별 운동LOG</router-link> |
+            <router-link to="/record/exercise">종목별 운동LOG</router-link> |
+            <router-link to="/record/body">BodyLOG</router-link>
         </nav>
-
         <RouterView />
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import axios from '@/util/axios';
-
 
 </script>
 
