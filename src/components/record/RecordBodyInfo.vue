@@ -1,7 +1,12 @@
 <template>
   <div>
     <h2>신체 변화</h2>
-    <canvas id="myChartCanvas"></canvas>
+    <div v-if ="recordStore.bodyInfos.length > 0">
+      <canvas id="myChartCanvas"></canvas>
+    </div>
+    <div v-else>
+      <h1>기록을 추가해주세요<br></h1>
+    </div>
   </div>
   
 </template>
@@ -36,7 +41,7 @@ onMounted(() => {
             data: newBodyWeightSet,
           },
           {
-            label: '체지방률',
+            label: '체지방량',
             borderColor: '#3498db',
             data: newBodyFatMassSet,
           },

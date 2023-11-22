@@ -1,28 +1,36 @@
 <template>
-    <div v-if="recordStore.exerciseList.length > 0">
-        <ul>
-          <!-- details 배열을 순회하면서 각 세트 정보를 보여줍니다 -->
-          <li v-for="(exercise, index) in recordStore.exerciseList" :key="index">
-            <p><strong>운동 종목:</strong> {{ exercise.exName }}</p>
-            <p><strong>세트:</strong> {{ exercise.setNum }}</p>
-          <div v-if="!(isEditing && editingIndex === index)">
-            <p><strong>무게:</strong> {{ exercise.weight }}</p>
-            <p><strong>횟수:</strong> {{ exercise.reps }}</p>
-            <button class="btn" @click="startEditing(exercise,index) ">수정</button>
-          </div>  
-          <div v-else>
-            <label for="weight">무게</label>
-            <input type="text" id="weight" v-model="newExercise.weight" class="view" /><br />
-      
-            <label for="reps">횟수</label>
-            <input type="text" id="setNum" v-model="newExercise.reps" class="view" /><br />  
-            <button  class="btn" @click="recordStore.updateRecord(newExercise) ">수정완료</button>
-          </div>  
-            <button class="btn" @click="recordStore.deleteRecord(exercise.recordId, exercise.detailId) ">삭제</button>
-            <hr />
-          </li>
-        </ul>
+  <div v-if="recordStore.exerciseList.length > 0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">운동 종목</th>
+          <th scope="col">세트</th>
+          <th scope="col">무게</th>
+          <th scope="col">횟수</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody v-for="(exercise, index) in recordStore.exerciseList" :key="index">
+        <tr>
+          <td>{{ exercise.exName }}</td>
+          <td>{{ exercise.setNum }} set</td>
+          <td v-if="!(isEditing && editingIndex === index)">{{ exercise.weight }} kg</td>
+          <td v-if="!(isEditing && editingIndex === index)">{{ exercise.reps }} 회</td>
+          <td v-if="!(isEditing && editingIndex === index)"><button class="btn btn-primary mt-3" @click="startEditing(exercise,index) ">수정</button></td>
+          <td v-if="!(isEditing && editingIndex === index)"><button class="btn btn-primary mt-3" @click="recordStore.deleteRecord(exercise.recordId, exercise.detailId) ">삭제</button></td>
+          <td v-if="(isEditing && editingIndex === index)"><input type="text" id="weight" v-model="newExercise.weight" class="form-control" />kg</td>
+          <td v-if="(isEditing && editingIndex === index)"><input type="text" id="reps" v-model="newExercise.reps" class="form-control" />회</td>
+          <td v-if="(isEditing && editingIndex === index)"><button  class="btn btn-primary mt-3" @click="endEditing">수정완료</button></td>
+        </tr>
+      </tbody>
+    </table> 
     </div>
+    <div v-else>
+      <h1>기록을 추가해주세요</h1>
+    </div>
+
+
 </template>
 
 <script setup>
@@ -30,9 +38,15 @@ import { ref } from "vue"
 import { useRecordStore } from "@/stores/record";
 
 const recordStore = useRecordStore();
-
 const editingIndex = ref(-1);
 const isEditing = ref(false);
+
+const newExercise = ref({
+  weight: '',
+  reps: '',
+  recordId: '',
+  detailId: '',
+});
 
 const startEditing = (exercise, index) => {
   isEditing.value = true;
@@ -47,12 +61,18 @@ const startEditing = (exercise, index) => {
 
 };
 
-const newExercise = ref({
-  weight: '',
-  reps: '',
-  recordId: '',
-  detailId: '',
-});
+const endEditing = () => {
+  isEditing.value = false;
+  recordStore.updateRecord(newExercise.value);
+  newExercise.value = {
+    weight: '',
+    reps: '',
+    recordId: '',
+    detailId: '',
+  };
+
+};
+
 
 
 </script>
