@@ -87,15 +87,26 @@
     <!-- 이 안에 리스트 표기 -->
     <div v-if="details.length > 0">
       <h2>세트 정보</h2>
-      <!-- details 배열을 순회하면서 각 세트 정보를 보여줍니다 -->
-      <div class="card" v-for="(item, index) in details" :key="index">
-      <!-- 운동 종목에 운동명을 문자로 넣어줄 메서드 필요-->
-        <p><strong>운동 종목:</strong> {{ item.exId }}</p>
-        <p><strong>세트:</strong> {{ item.setNum }}</p>
-        <p><strong>무게:</strong> {{ item.weight }}</p>
-        <p><strong>횟수:</strong> {{ item.reps }}</p>
-      </div>
-      
+      <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">운동 종목</th>
+                <th scope="col">세트</th>
+                <th scope="col">무게</th>
+                <th scope="col">횟수</th>
+              </tr>
+            </thead>
+            <tbody v-for="(item, index) in details" :key="index">
+              <tr>
+                <th scope="row">{{ index + 1 }}</th>
+                <td>{{ item.exName }}</td>
+                <td>{{ item.setNum }} set</td>
+                <td>{{ item.weight }} kg</td>
+                <td>{{ item.reps }} 회</td>
+              </tr>
+            </tbody>
+      </table>      
     </div>
     <button class="btn btn-primary mt-3" @click="recordStore.createRecord(record)">완료</button>
     <!-- 이 버튼을 누르면 그동안의 운동 기록 배열과 시작할때 나의 정보를 함께 보냄 -->
