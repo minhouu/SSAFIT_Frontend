@@ -30,11 +30,6 @@ export const useRecordStore = defineStore('record', () => {
     //detail(운동 상세 정보)를 받아서 한번에 insert할 예정
     //운동 기록 생성
     const createRecord = (record) => {
-      if (!(record.trainnerSeq && record.bodyWeight && record.bodyFatMass && record.skeletalMuscleMass) ) {
-        alert("오류: 레코드 값이 없습니다.");
-        return; // 함수 종료
-      }
-
       axios({
         url: "record",
         method: "POST",
