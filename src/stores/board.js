@@ -13,14 +13,17 @@ export const useBoardStore = defineStore('board', () => {
   const userStore = useUserStore();
 
   const articleList = ref([]);
-
   const article = ref({});
 
+  // for pagination
   const page = ref(1);
-
   const totalPage = ref(1);
 
+  // for search pagination
+  const searchType = ref("");
   const searchKeyword = ref("");
+  const searchPage = ref(1);
+  const searchTotalPage = ref(1);
 
   /*
   getters
@@ -32,6 +35,12 @@ export const useBoardStore = defineStore('board', () => {
   /*
   actions
   */
+  const clearBoardStore = () => {
+    articleList.value = [];
+    article.value={};
+    searchPage.value = 1;
+  }
+  
   const createArticle = (newArticle) => {
     // 빈 요소 없는지 검증
     for (const key in newArticle) {
@@ -67,16 +76,19 @@ export const useBoardStore = defineStore('board', () => {
       });
   };
 
-  const getArticleListBySearch = (pageNum, searchKeyword) => {
+  const getArticleListBySearch = (pageNum, searchType, searchKeyword) => {
+    console.log(pageNum, searchKeyword)
     axios({
       url: `board/search`,
       method: "GET",
       params: {
+        type: searchType,
         page: pageNum,
         keyword: searchKeyword,
       },
     })
       .then((res) => {
+        console.log(res.data)
         articleList.value = res.data;
       })
       .catch((err) => {
@@ -101,17 +113,22 @@ export const useBoardStore = defineStore('board', () => {
       });
   }
 
-  const getCount = (searchKeyword) => {
+  const getCount = (inputSearchKeyword) => {
     axios({
       url: `board/count`,
       method: "GET",
       params: {
-        keyword: searchKeyword,
+        keyword: inputSearchKeyword,
       },
     })
       .then((res) => {
         console.log(res.data)
+        console.log(inputSearchKeyword)
+        if (inputSearchKeyword === undefined) {
         totalPage.value = Math.ceil(res.data / 10);
+        } else {
+          searchTotalPage.value = Math.ceil(res.data / 10);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -168,7 +185,11 @@ export const useBoardStore = defineStore('board', () => {
     isEditor,
     page,
     totalPage,
+    searchType,
     searchKeyword,
+    searchPage,
+    searchTotalPage,
+    clearBoardStore,
     createArticle,
     updateArticle,
     deleteArticle,

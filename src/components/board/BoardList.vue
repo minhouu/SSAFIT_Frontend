@@ -32,28 +32,37 @@
         </tbody>
       </table>
       <div class="row d-flex justify-content-between align-items-center">
-        <ul class="col pagination mt-3  ">
-          <li class="page-item"><button :class="{ 'disabled': 1 === boardStore.page }" class="page-link"
-              @click="setPage(boardStore.page - 1)">이전</button></li>
-          <li class="page-item"><button v-if="boardStore.page - 2 > 0" class="page-link"
-              @click="setPage(boardStore.page - 2)">{{ boardStore.page - 2 }}</button></li>
-          <li class="page-item"><button v-if="boardStore.page - 1 > 0" class="page-link"
-              @click="setPage(boardStore.page - 1)">{{ boardStore.page - 1 }}</button></li>
-          <li class="page-item"><button class="page-link active" @click="setPage(boardStore.page)">{{ boardStore.page
-          }}</button>
-          </li>
-          <li class="page-item"><button v-if="boardStore.page + 1 <= boardStore.totalPage" class="page-link"
-              @click="setPage(boardStore.page + 1)">{{ boardStore.page + 1
-              }}</button></li>
-          <li class="page-item"><button v-if="boardStore.page + 2 <= boardStore.totalPage" class="page-link"
-              @click="setPage(boardStore.page + 2)">{{ boardStore.page + 2
-              }}</button></li>
-          <li class="page-item"><button :class="{ 'disabled': boardStore.totalPage === boardStore.page }"
-              class="page-link" @click="setPage(boardStore.page + 1)">다음</button></li>
-        </ul>
-        <div class="col input-group">
-          <input type="text" class="form-control" placeholder="검색어를 입력하세요" v-model="searchKeyword" />
-          <button class="btn btn-outline-primary" type="button" @click="startSearch">검색하기</button>
+        <div class="col-4">
+          <ul class="pagination mt-3">
+            <li class="page-item"><button :class="{ 'disabled': 1 === boardStore.page }" class="page-link"
+                @click="setPage(boardStore.page - 1)">이전</button></li>
+            <li class="page-item"><button v-if="boardStore.page - 2 > 0" class="page-link"
+                @click="setPage(boardStore.page - 2)">{{ boardStore.page - 2 }}</button></li>
+            <li class="page-item"><button v-if="boardStore.page - 1 > 0" class="page-link"
+                @click="setPage(boardStore.page - 1)">{{ boardStore.page - 1 }}</button></li>
+            <li class="page-item"><button class="page-link active" @click="setPage(boardStore.page)">{{ boardStore.page
+            }}</button>
+            </li>
+            <li class="page-item"><button v-if="boardStore.page + 1 <= boardStore.totalPage" class="page-link"
+                @click="setPage(boardStore.page + 1)">{{ boardStore.page + 1
+                }}</button></li>
+            <li class="page-item"><button v-if="boardStore.page + 2 <= boardStore.totalPage" class="page-link"
+                @click="setPage(boardStore.page + 2)">{{ boardStore.page + 2
+                }}</button></li>
+            <li class="page-item"><button :class="{ 'disabled': boardStore.totalPage === boardStore.page }"
+                class="page-link" @click="setPage(boardStore.page + 1)">다음</button></li>
+          </ul>
+        </div>
+        <div class="row col-8">
+          <select class="col form-select" v-model="searchType">
+            <option value="title">제목</option>
+            <option value="content">내용</option>
+            <option value="writer">작성자</option>
+          </select>
+          <div class="col input-group">
+            <input type="text" class="form-control" placeholder="검색어를 입력하세요" v-model="searchKeyword" />
+            <button class="btn btn-outline-primary" type="button" @click="startSearch">검색하기</button>
+          </div>
         </div>
       </div>
 
@@ -79,6 +88,7 @@ const userStore = useUserStore();
 const dateParser = useDateParserStore();
 
 const searchKeyword = ref("");
+const searchType = ref("title");
 
 
 onMounted(() => {
@@ -94,13 +104,15 @@ const setPage = (pageNum) => {
   if (pageNum > boardStore.totalPage) return alert("마지막 페이지 입니다.");
 
   boardStore.page = pageNum;
-  boardStore.getArticleList(boardStore.page);
   router.go(0);
 };
 
 const startSearch = () => {
-  console.log(searchKeyword.value)
+  if (!searchKeyword.value) return alert("검색어를 입력해주세요");
+  if (searchKeyword.value.length < 2) return alert("검색어는 2글자 이상 입력해주세요");
+  boardStore.clearBoardStore();
   boardStore.searchKeyword = searchKeyword.value;
+  boardStore.searchType = searchType.value;
   router.push({ name: "BoardSearch" });
 };
 

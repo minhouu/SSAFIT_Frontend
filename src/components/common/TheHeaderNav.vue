@@ -1,12 +1,12 @@
 <template>
     <header class="container">
         <nav class="header mb-4" style="height: 330px;">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between">
                 <RouterLink class="navbar-brand m-3" to="/">
-                    <h1 class="text-primary tw-bold" style="backdrop-filter: blur(5px)">PINKDUMBBELL</h1>
+                    <h1 class="text-primary tw-bold p-2 rounded" style="backdrop-filter: brightness(40%); font-weight: 900;">종합 운동 커뮤니티<br>PINKY-DUMBBELL</h1>
                 </RouterLink>
                 <div class="m-3">
-                    <div v-if="userStore.user">
+                    <div class="py-2 px-3 rounded" style="backdrop-filter: brightness(40%);" v-if="userStore.user">
                         <RouterLink :to="{ name: 'UserDetail' }">
                             <button type="button" class="btn btn-primary">내 정보</button>
                         </RouterLink> |
@@ -14,7 +14,7 @@
                             <button type="button" class="btn btn-primary">로그아웃</button>
                         </a>
                     </div>
-                    <div v-else>
+                    <div class="py-2 px-3 rounded" style="backdrop-filter: brightness(40%);" v-else>
                         <RouterLink to="/login">
                             <button type="button" class="btn btn-primary">로그인</button>
                         </RouterLink> |
