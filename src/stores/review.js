@@ -43,7 +43,7 @@ export const useReviewStore = defineStore('review', () => {
       })
       .then(() => {
         if (review.value.writerSeq != userStore.user.userSeq) {
-          increaseViewCount(review.value.reviewId);
+          increaseViewCount(reviewId);
         }
       })
       .catch((err) => {

@@ -20,6 +20,8 @@ export const useBoardStore = defineStore('board', () => {
 
   const totalPage = ref(1);
 
+  const searchKeyword = ref("");
+
   /*
   getters
   */
@@ -65,6 +67,23 @@ export const useBoardStore = defineStore('board', () => {
       });
   };
 
+  const getArticleListBySearch = (pageNum, searchKeyword) => {
+    axios({
+      url: `board/search`,
+      method: "GET",
+      params: {
+        page: pageNum,
+        keyword: searchKeyword,
+      },
+    })
+      .then((res) => {
+        articleList.value = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   const getArticle = (id) => {
     // get one article
     axios({
@@ -82,12 +101,16 @@ export const useBoardStore = defineStore('board', () => {
       });
   }
 
-  const getCount = () => {
+  const getCount = (searchKeyword) => {
     axios({
       url: `board/count`,
       method: "GET",
+      params: {
+        keyword: searchKeyword,
+      },
     })
       .then((res) => {
+        console.log(res.data)
         totalPage.value = Math.ceil(res.data / 10);
       })
       .catch((err) => {
@@ -145,12 +168,14 @@ export const useBoardStore = defineStore('board', () => {
     isEditor,
     page,
     totalPage,
+    searchKeyword,
     createArticle,
     updateArticle,
     deleteArticle,
     getArticleList,
     getArticle,
     getCount,
+    getArticleListBySearch,
   }
 }, {
   persist: {
