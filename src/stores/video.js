@@ -117,24 +117,24 @@ export const useVideoStore = defineStore('video', () => {
       });
   }
 
-  const updateVideo = (newVideo) => {
+  const updateVideo = (video) => {
     console.log(newVideo)
 
     // 빈 요소 없는지 검증
-    for (const key in newVideo) {
-      if (newVideo[key] == "") return alert("모든 항목을 입력해주세요.");
+    for (const key in video) {
+      if (video[key] == "") return alert("모든 항목을 입력해주세요.");
     }
 
     // url에서 videoKey만 추출
     const regex = /[?&]v=([^?&]+)/;
     const key = newVideo.url.match(regex);
     if (!key || key[1].length !== 11) return alert("유효하지 않은 URL입니다.");
-    newVideo.videoKey = key[1];
+    video.videoKey = key[1];
 
     axios({
       url: `video`,
       method: "PUT",
-      data: newVideo,
+      data: video,
     })
       .then((res) => {
         alert("수정 완료");

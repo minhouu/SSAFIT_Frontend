@@ -1,16 +1,15 @@
 <template>
-  <ul style="margin-bottom: 40px;" class="nav nav-tabs">
-    <li class="nav-item">
-      <RouterLink :class="{active : board}" class="nav-link nav-setsize" to="/board">BOARD</RouterLink> 
-    </li>
-    <li class="nav-item">
-      <RouterLink :class="{active : video}" class="nav-link nav-setsize" to="/video">VIDEO</RouterLink> 
-    </li>
-    <li class="nav-item">
-      <RouterLink :class="{active : record}" class="nav-link nav-setsize" to="/record">RECORD</RouterLink> 
-    </li>
-  </ul>
-
+    <ul class="nav nav-tabs" style="margin-bottom: 40px; backdrop-filter: opacity(1%) !important;">
+      <li class="nav-item">
+        <RouterLink :class="{ active: board }" class="nav-link nav-setsize" to="/board">BOARD</RouterLink>
+      </li>
+      <li class="nav-item">
+        <RouterLink :class="{ active: video }" class="nav-link nav-setsize" to="/video">VIDEO</RouterLink>
+      </li>
+      <li class="nav-item">
+        <RouterLink :class="{ active: record }" class="nav-link nav-setsize" to="/record">RECORD</RouterLink>
+      </li>
+    </ul>
 </template>
 
 <script setup>

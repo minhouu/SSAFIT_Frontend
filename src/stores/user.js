@@ -88,6 +88,7 @@ export const useUserStore = defineStore('user', () => {
         sessionStorage.setItem("access-token", res.data["access-token"])
         alert("로그인 성공");
         router.push("/");
+        router.go(0);
       })
       .catch((err) => {
         console.log(err)

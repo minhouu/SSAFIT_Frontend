@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="userStore.user">
     <div class="video-list-top">
-      <h2>비디오 목록</h2>
+      <h2 class="fs-2 fw-bold my-2" >비디오 목록</h2>
       <RouterLink to="/video/regist">
         <button type="button" class="btn btn-primary">새 비디오 추가하기</button>
       </RouterLink>
@@ -11,8 +11,8 @@
 
     <div class="container" v-if="videoStore.videoList.length">
       <div class="video-card-store">
-        <div v-for="(video, index) in videoStore.videoList" :key="index" class="card"
-          style="width: 30%; margin-top: 20px;">
+        <div v-for="(video, index) in videoStore.videoList" :key="index" class="card my-3"
+          style="width: 30%;">
           <RouterLink class="nav-link active" :to="`/video/${video.videoId}`">
             <img :src="`https://img.youtube.com/vi/${video.videoKey}/mqdefault.jpg`" class="card-img-top img-thumbnail" alt="...">
             <div class="card-body">

@@ -1,13 +1,16 @@
 <template>
-  <div>
+  <div class="container">
     <h2>유저 상세정보</h2>
     <fieldset>
-      <label for="id">아이디</label>
-      <div type="text" id="id" class="view">{{ userStore.user.id }}</div><br />
-      <label for="name">닉네임</label>
-      <div id="name" class="view">{{ userStore.user.nickname }}</div>
-      <br/>
-      <button class="btn" @click="userStore.checkBeforeCreate(user)">수정</button>
+      <div class="mb-4">
+        <label for="user-id" class="form-label">아이디</label>
+        <input type="text" class="form-control" id="user-id" :value="userStore.user.id"  disabled>
+      </div>
+      <div class="mb-4">
+        <label for="user-name" class="form-label">닉네임</label>
+        <input type="text" class="form-control" id="user-name" :value="userStore.user.nickname"  disabled>
+      </div>
+      <button class="btn btn-primary mx-1" @click="userStore.checkBeforeCreate(user)">수정</button>
     </fieldset>
   </div>
 </template>

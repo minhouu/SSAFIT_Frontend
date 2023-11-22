@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-if="userStore.user">
-    <h2 class="mb-4">게시글 등록</h2>
+    <h2 class="fs-2 fw-bold mb-5">게시글 등록</h2>
     <fieldset>
       <div class="mb-4">
         <label for="board-regist-name" class="form-label">작성자</label>

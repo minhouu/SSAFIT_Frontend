@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="userStore.user">
     <div class="board-list-top">
-      <h2>게시글 목록</h2>
+      <h2 class="fs-2 fw-bold mb-4">게시글 목록</h2>
       <RouterLink to="/board/regist">
         <button type="button" class="btn btn-primary">새 글 쓰기</button>
       </RouterLink>
@@ -27,29 +27,45 @@
             </td>
             <td>{{ article.nickname }}</td>
             <td>{{ article.viewCnt }}</td>
-            <td>{{ formatDate(article.createdAt) }}</td>
+            <td>{{ dateParser.formatDate(article.createdAt) }}</td>
           </tr>
         </tbody>
       </table>
-      <ul class="pagination">
-        <li class="page-item"><button :class="{ 'disabled': 1 === boardStore.page }" class="page-link"
-            @click="setPage(boardStore.page - 1)">이전</button></li>
-        <li class="page-item"><button v-if="boardStore.page - 2 > 0" class="page-link"
-            @click="setPage(boardStore.page - 2)">{{ boardStore.page - 2 }}</button></li>
-        <li class="page-item"><button v-if="boardStore.page - 1 > 0" class="page-link"
-            @click="setPage(boardStore.page - 1)">{{ boardStore.page - 1 }}</button></li>
-        <li class="page-item"><button class="page-link active" @click="setPage(boardStore.page)">{{ boardStore.page
-        }}</button>
-        </li>
-        <li class="page-item"><button v-if="boardStore.page + 1 <= boardStore.totalPage" class="page-link"
-            @click="setPage(boardStore.page + 1)">{{ boardStore.page + 1
-            }}</button></li>
-        <li class="page-item"><button v-if="boardStore.page + 2 <= boardStore.totalPage" class="page-link"
-            @click="setPage(boardStore.page + 2)">{{ boardStore.page + 2
-            }}</button></li>
-        <li class="page-item"><button :class="{ 'disabled': boardStore.totalPage === boardStore.page }" class="page-link"
-            @click="setPage(boardStore.page + 1)">다음</button></li>
-      </ul>
+      <div class="row d-flex justify-content-between align-items-center">
+        <div class="col-4">
+          <ul class="pagination mt-3">
+            <li class="page-item"><button :class="{ 'disabled': 1 === boardStore.page }" class="page-link"
+                @click="setPage(boardStore.page - 1)">이전</button></li>
+            <li class="page-item"><button v-if="boardStore.page - 2 > 0" class="page-link"
+                @click="setPage(boardStore.page - 2)">{{ boardStore.page - 2 }}</button></li>
+            <li class="page-item"><button v-if="boardStore.page - 1 > 0" class="page-link"
+                @click="setPage(boardStore.page - 1)">{{ boardStore.page - 1 }}</button></li>
+            <li class="page-item"><button class="page-link active" @click="setPage(boardStore.page)">{{ boardStore.page
+            }}</button>
+            </li>
+            <li class="page-item"><button v-if="boardStore.page + 1 <= boardStore.totalPage" class="page-link"
+                @click="setPage(boardStore.page + 1)">{{ boardStore.page + 1
+                }}</button></li>
+            <li class="page-item"><button v-if="boardStore.page + 2 <= boardStore.totalPage" class="page-link"
+                @click="setPage(boardStore.page + 2)">{{ boardStore.page + 2
+                }}</button></li>
+            <li class="page-item"><button :class="{ 'disabled': boardStore.totalPage === boardStore.page }"
+                class="page-link" @click="setPage(boardStore.page + 1)">다음</button></li>
+          </ul>
+        </div>
+        <div class="row col-8">
+          <select class="col form-select" v-model="searchType">
+            <option value="title">제목</option>
+            <option value="content">내용</option>
+            <option value="writer">작성자</option>
+          </select>
+          <div class="col input-group">
+            <input type="text" class="form-control" placeholder="검색어를 입력하세요" v-model="searchKeyword" />
+            <button class="btn btn-outline-primary" type="button" @click="startSearch">검색하기</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div v-else>등록된 게시글이 없습니다.</div>
@@ -58,16 +74,22 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useBoardStore } from "@/stores/board";
 import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
+import { useDateParserStore } from "@/stores/dateParser";
 
 const router = useRouter();
 
 const boardStore = useBoardStore();
 
 const userStore = useUserStore();
+const dateParser = useDateParserStore();
+
+const searchKeyword = ref("");
+const searchType = ref("title");
+
 
 onMounted(() => {
   boardStore.getArticleList(boardStore.page);
@@ -82,34 +104,18 @@ const setPage = (pageNum) => {
   if (pageNum > boardStore.totalPage) return alert("마지막 페이지 입니다.");
 
   boardStore.page = pageNum;
-  boardStore.getArticleList(boardStore.page);
   router.go(0);
 };
 
-const formatDate = (dateString) => {
-  // 주어진 문자열로부터 Date 객체 생성
-  const targetDate = new Date(dateString);
-
-  // 현재 시간과의 차이 계산 (밀리초 단위)
-  const timeDifference = Date.now() - targetDate.getTime();
-  
-  if (timeDifference < 60 * 60 * 1000) {
-    const minutes = Math.floor(timeDifference / (60 * 1000));
-    // 1분 이내인 경우 '조금 전' 표시
-    if (minutes < 1) {
-      return '조금 전';
-    } else {
-      return `${minutes}분 전`;
-    }
-  } else if (timeDifference < 24 * 60 * 60 * 1000) {
-    // 24시간 이내의 경우
-    const hours = Math.floor(timeDifference / (60 * 60 * 1000));
-    return `${hours}시간 전`;
-  } else {
-    // 24시간 이상인 경우
-    return dateString.slice(0, 10);
-  }
+const startSearch = () => {
+  if (!searchKeyword.value) return alert("검색어를 입력해주세요");
+  if (searchKeyword.value.length < 2) return alert("검색어는 2글자 이상 입력해주세요");
+  boardStore.clearBoardStore();
+  boardStore.searchKeyword = searchKeyword.value;
+  boardStore.searchType = searchType.value;
+  router.push({ name: "BoardSearch" });
 };
+
 </script>
 
 <style scoped>
@@ -117,11 +123,5 @@ const formatDate = (dateString) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.pagination {
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
 }
 </style>

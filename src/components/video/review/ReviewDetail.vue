@@ -1,28 +1,53 @@
 <template>
   <div class="container">
     <div v-if="!isEditing">
-      <fieldset>
-        <legend>게시글 상세 정보</legend>
-        <button @click="router.go(-1)">뒤로 가기</button>
-        <div>{{ reviewStore.review.title }}</div>
-        <div>{{ reviewStore.review.viewCnt }}</div>
-        <div>{{ reviewStore.review.nickname }}</div>
-        <div>{{ reviewStore.review.createdAt }}</div>
-        <div>{{ reviewStore.review.content }}</div>
-        <button v-if="reviewStore.isEditor" @click="startEditing">수정하기</button>
-        <button v-if="reviewStore.isEditor" @click="reviewStore.deleteReview()">삭제하기</button>
+      <div class="d-flex justify-content-between align-items-center mx-3 mb-4">
+        <h3 class="fs-3 fw-bold">리뷰 상세보기</h3>
+        <button class="btn btn-primary" @click="router.go(-1)">게시물로 돌아가기</button>
+      </div>
+      
+      <fieldset class="form-control mb-3">
+        <div class="mb-3">
+          <div class="row d-flex align-items-baseline border-bottom border-1 border-dark p-2 my-2">
+            <div class="col fw-bold fs-2">{{ reviewStore.review.title }}</div>
+            <div class="col-2 d-flex justify-content-center">
+              <div>{{ reviewStore.review.createdAt }}</div>
+            </div>
+          </div>
+          <div class="row p-2">
+            <div class="col text-muted">
+              <div>작성자 : {{ reviewStore.review.nickname }}</div>
+              <div>조회수 : {{ reviewStore.review.viewCnt }}회</div>
+            </div>
+            <div class="col-2 d-flex justify-content-center">
+              <button class="btn btn-primary btn-sm m-2" v-if="reviewStore.isEditor" @click="changeEditing">수정하기</button>
+              <button class="btn btn-primary btn-sm m-2" v-if="reviewStore.isEditor"
+                @click="reviewStore.deleteReview()">삭제하기</button>
+            </div>
+          </div>
+        </div>
+        <pre class="mx-2 mb-4 mt-3 fs-6">{{ reviewStore.review.content }}</pre>
       </fieldset>
     </div>
 
     <div v-else>
-      <h2>게시글 수정</h2>
+      <h3 class="mb-4">리뷰 수정</h3>
       <fieldset>
-        <div>이름 : {{ reviewStore.review.nickname }}</div>
-        <label for="title">제목</label>
-        <input type="text" id="title" v-model="reviewStore.review.title" class="view" /><br />
-        <label for="content">내용</label>
-        <input type="text" id="content" v-model="reviewStore.review.content" class="view" /><br />
-        <button class="btn" @click="reviewStore.updateReview()">수정</button>
+        <div class="mb-4">
+          <label for="review-update-name" class="form-label">작성자</label>
+          <input type="text" class="form-control" id="review-update-name" :value="reviewStore.review.nickname" disabled>
+        </div>
+        <div class="mb-4">
+          <label for="review-update-title" class="form-label">제목</label>
+          <input type="email" class="form-control" id="review-update-title" v-model="reviewStore.review.title">
+        </div>
+        <div class="mb-4">
+          <label for="review-update-content" class="form-label">내용</label>
+          <textarea class="form-control" id="review-update-content" rows="5"
+            v-model="reviewStore.review.content"></textarea>
+        </div>
+        <button type="button" class="btn btn-primary mx-1" @click="reviewStore.updateReview()">수정하기</button>
+        <button type="button" class="btn btn-primary mx-1" @click="changeEditing">돌아가기</button>
       </fieldset>
     </div>
   </div>
@@ -45,8 +70,9 @@ onMounted(() => {
   reviewStore.getReview(reviewId);
 });
 
-const startEditing = () => {
-  isEditing.value = true;
+const changeEditing = () => {
+  isEditing.value = !isEditing.value;
+  reviewStore.getReview(reviewId);
 };
 
 </script>

@@ -1,26 +1,25 @@
 <template>
     <header class="container">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary" id="the-header">
-            <div class="container-fluid">
-                <RouterLink class="navbar-brand" to="/">
-                    <!-- <img src="@\assets\logo_transparent.png" class="header-logo"/> -->
-                    <h1>SSAFIT</h1>
+        <nav class="header mb-4" style="height: 330px;">
+            <div class="d-flex justify-content-between">
+                <RouterLink class="navbar-brand m-3" to="/">
+                    <h1 class="text-primary tw-bold p-2 rounded" style="backdrop-filter: brightness(40%); font-weight: 900;">종합 운동 커뮤니티<br>PINKY-DUMBBELL</h1>
                 </RouterLink>
-                <div>
-                    <div v-if="userStore.user">
+                <div class="m-3">
+                    <div class="py-2 px-3 rounded" style="backdrop-filter: brightness(40%);" v-if="userStore.user">
                         <RouterLink :to="{ name: 'UserDetail' }">
-                            <button type="button" class="btn btn-secondary">내 정보</button>
+                            <button type="button" class="btn btn-primary">내 정보</button>
                         </RouterLink> |
                         <a href="#" @click="userStore.logout()">
-                            <button type="button" class="btn btn-secondary">로그아웃</button>
+                            <button type="button" class="btn btn-primary">로그아웃</button>
                         </a>
                     </div>
-                    <div v-else>
+                    <div class="py-2 px-3 rounded" style="backdrop-filter: brightness(40%);" v-else>
                         <RouterLink to="/login">
-                            <button type="button" class="btn btn-secondary">로그인</button>
+                            <button type="button" class="btn btn-primary">로그인</button>
                         </RouterLink> |
                         <RouterLink :to="{ name: 'UserRegist' }">
-                            <button type="button" class="btn btn-secondary">회원가입</button>
+                            <button type="button" class="btn btn-primary">회원가입</button>
                         </RouterLink>
                     </div>
                 </div>
@@ -40,7 +39,11 @@ const userStore = useUserStore();
 </script>
 
 <style scoped>
-#the-header {
-    margin-bottom: 40px;
+.header {
+    background-image: linear-gradient(rgb(227, 115, 131, 0.1), rgb(227, 11, 92, 0.1)), url('../../assets/header.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity : 0.8;
 }
+
 </style>

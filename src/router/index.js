@@ -8,6 +8,7 @@ import BoardView from '@/views/BoardView.vue';
 import BoardList from '@/components/board/BoardList.vue';
 import BoardRegist from '@/components/board/BoardRegist.vue';
 import BoardDetail from '@/components/board/BoardDetail.vue';
+import BoardSearch from '@/components/board/BoardSearch.vue';
 
 import UserView from "@/views/UserView.vue";
 import UserRegist from "@/components/user/UserRegist.vue";
@@ -62,6 +63,11 @@ const router = createRouter({
           name: "BoardRegist",
           component: BoardRegist,
         },
+        {
+          path: "search",
+          name: "BoardSearch",
+          component: BoardSearch,
+        }
       ]
     },
     {
