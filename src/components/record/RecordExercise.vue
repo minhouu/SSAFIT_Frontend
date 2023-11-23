@@ -67,7 +67,7 @@
     </div>
     <div v-else>
       <div v-if="selectId !== ''">
-        <h2>{{ recordStore.exName }}의 기록을 추가해주세요</h2>
+        <h2>{{ exMapper[exId] }}의 기록을 추가해주세요</h2>
       </div>
       <div class="mt-3" v-else>
         <h3>운동 종목을 선택해주세요</h3>

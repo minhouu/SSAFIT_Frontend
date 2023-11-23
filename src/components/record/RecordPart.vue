@@ -13,7 +13,6 @@
           <option value="shoulder">어깨</option>
           <option value="arm">팔</option>
           <option value="abs">복근</option>
-          <option value="cardio">유산소</option>
           <!-- 부위에 따라 추가 -->
         </select>
         <div class="d-flex justify-content-end">
@@ -24,7 +23,7 @@
 
     <!-- 여기에 부위List를 보여주고 select하면 part에 바인딩 하는게 필요  -->
     <div v-if="recordStore.exerciseList.length > 0">
-      <h2>최근 30 회 부위별 운동 정보</h2>
+      <h3 class="my-4 fs-4 fw-bold">최근 30 회 부위별 운동 정보</h3>
       <table class="table">
         <thead>
           <tr>
@@ -50,7 +49,7 @@
     </div>
     <div v-else>
       <div v-if="selectPart !== ''">
-        <h2>{{ selectPart }}의 운동 기록을 추가해주세요</h2>
+        <h2>운동 기록을 추가해주세요</h2>
       </div>
       <div class="mt-3" v-else>
         <h3>운동 부위를 선택해주세요</h3>
@@ -101,7 +100,6 @@ const selectTap = () => {
   recordStore.getPartExerciseList(part.value);
   selectPart.value = part.value;
 }
-
 
 onMounted(() => {
   recordStore.init();
