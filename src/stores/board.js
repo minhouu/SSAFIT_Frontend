@@ -113,18 +113,19 @@ export const useBoardStore = defineStore('board', () => {
       });
   }
 
-  const getCount = (inputSearchKeyword) => {
+  const getCount = (inputSearchKeyword, inputSearchType) => {
     axios({
       url: `board/count`,
       method: "GET",
       params: {
         keyword: inputSearchKeyword,
+        type: inputSearchType,
       },
     })
       .then((res) => {
         console.log(res.data)
         console.log(inputSearchKeyword)
-        if (inputSearchKeyword === undefined) {
+        if (inputSearchKeyword === undefined && inputSearchType === undefined) {
         totalPage.value = Math.ceil(res.data / 10);
         } else {
           searchTotalPage.value = Math.ceil(res.data / 10);

@@ -2,12 +2,16 @@
   <div class="container"> 
     <TheHeaderNav />
     <router-view class="mx-3"></router-view>
-    <footer class="my-5"></footer>
+    <div class="container" style="margin-top: 100px;"> 
+      <TheFooter />
+    </div>
+    
   </div>
 </template>
 
 <script setup>
 import TheHeaderNav from '@/components/common/TheHeaderNav.vue';
+import TheFooter from '@/components/common/TheFooter.vue';
 
 </script>
 

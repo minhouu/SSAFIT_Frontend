@@ -1,11 +1,18 @@
 <template>
   <div class="container">
-    <h2 class="fs-2 fw-bold mb-4">
-      <span v-if="boardStore.searchType==='title'">제목</span>
-      <span v-if="boardStore.searchType==='content'">내용</span>
-      <span v-if="boardStore.searchType==='writer'">작성자</span>
-      검색 결과
-    </h2>
+    <div class="d-flex justify-content-between">
+      <h2 class="fs-2 fw-bold mb-4">
+        <span v-if="boardStore.searchType === 'title'">제목</span>
+        <span v-if="boardStore.searchType === 'content'">내용</span>
+        <span v-if="boardStore.searchType === 'writer'">작성자</span>
+        검색 결과
+      </h2>
+      <div>
+        <button type="button" class="btn btn-primary" @click="router.push('/board')">목록으로</button>
+      </div>
+      
+    </div>
+
     <div v-if="boardStore.articleList.length">
       <table class="table table-hover">
         <thead>
@@ -29,33 +36,34 @@
           </tr>
         </tbody>
       </table>
-        <ul class="pagination mt-3">
-          <li class="page-item"><button :class="{ 'disabled': 1 === boardStore.searchPage }" class="page-link"
-              @click="setPage(boardStore.searchPage - 1)">이전</button></li>
-          <li class="page-item"><button v-if="boardStore.searchPage - 2 > 0" class="page-link"
-              @click="setPage(boardStore.searchPage - 2)">{{ boardStore.searchPage - 2 }}</button></li>
-          <li class="page-item"><button v-if="boardStore.searchPage - 1 > 0" class="page-link"
-              @click="setPage(boardStore.searchPage - 1)">{{ boardStore.searchPage - 1 }}</button></li>
-          <li class="page-item"><button class="page-link active" @click="setPage(boardStore.searchPage)">{{ boardStore.searchPage
-          }}</button>
-          </li>
-          <li class="page-item"><button v-if="boardStore.searchPage + 1 <= boardStore.searchTotalPage" class="page-link"
-              @click="setPage(boardStore.searchPage + 1)">{{ boardStore.searchPage + 1
-              }}</button></li>
-          <li class="page-item"><button v-if="boardStore.searchPage + 2 <= boardStore.searchTotalPage" class="page-link"
-              @click="setPage(boardStore.searchPage + 2)">{{ boardStore.searchPage + 2
-              }}</button></li>
-          <li class="page-item"><button :class="{ 'disabled': boardStore.searchTotalPage === boardStore.searchPage }"
-              class="page-link" @click="setPage(boardStore.searchPage + 1)">다음</button></li>
-        </ul>
-    </div>  
+      <ul class="pagination mt-4">
+        <li class="page-item"><button :class="{ 'disabled': 1 === boardStore.searchPage }" class="page-link"
+            @click="setPage(boardStore.searchPage - 1)">이전</button></li>
+        <li class="page-item"><button v-if="boardStore.searchPage - 2 > 0" class="page-link"
+            @click="setPage(boardStore.searchPage - 2)">{{ boardStore.searchPage - 2 }}</button></li>
+        <li class="page-item"><button v-if="boardStore.searchPage - 1 > 0" class="page-link"
+            @click="setPage(boardStore.searchPage - 1)">{{ boardStore.searchPage - 1 }}</button></li>
+        <li class="page-item"><button class="page-link active" @click="setPage(boardStore.searchPage)">{{
+          boardStore.searchPage
+        }}</button>
+        </li>
+        <li class="page-item"><button v-if="boardStore.searchPage + 1 <= boardStore.searchTotalPage" class="page-link"
+            @click="setPage(boardStore.searchPage + 1)">{{ boardStore.searchPage + 1
+            }}</button></li>
+        <li class="page-item"><button v-if="boardStore.searchPage + 2 <= boardStore.searchTotalPage" class="page-link"
+            @click="setPage(boardStore.searchPage + 2)">{{ boardStore.searchPage + 2
+            }}</button></li>
+        <li class="page-item"><button :class="{ 'disabled': boardStore.searchTotalPage === boardStore.searchPage }"
+            class="page-link" @click="setPage(boardStore.searchPage + 1)">다음</button></li>
+      </ul>
+    </div>
 
     <div v-else>등록된 게시글이 없습니다.</div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";  
+import { ref, onMounted } from "vue";
 import { useUserStore } from "../../stores/user";
 import { useBoardStore } from "@/stores/board";
 import { useDateParserStore } from "@/stores/dateParser";
@@ -68,7 +76,7 @@ const dateParser = useDateParserStore();
 
 onMounted(() => {
   console.log(boardStore.searchType, boardStore.searchKeyword)
-  boardStore.getCount(boardStore.searchKeyword)
+  boardStore.getCount(boardStore.searchKeyword, boardStore.searchType);
   boardStore.getArticleListBySearch(boardStore.searchPage, boardStore.searchType, boardStore.searchKeyword);
 });
 
@@ -76,7 +84,7 @@ const setPage = (pageNum) => {
   if (pageNum < 1) return alert("첫 페이지 입니다.");
   // board 최대페이지 로직 추가필요
 
-  boardStore.getCount(boardStore.searchKeyword);
+  boardStore.getCount(boardStore.searchKeyword, boardStore.searchType);
   if (pageNum > boardStore.searchTotalPage) return alert("마지막 페이지 입니다.");
 
   boardStore.searchPage = pageNum;
@@ -84,6 +92,4 @@ const setPage = (pageNum) => {
 };
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2 style="margin-bottom: 40px;">로그인</h2>
+    <h2 class="fs-2 fw-bold mb-4">로그인</h2>
     <fieldset>
       <div class="mb-3">
         <label class="form-label" for="id">아이디</label>

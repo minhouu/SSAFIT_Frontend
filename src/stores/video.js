@@ -13,12 +13,17 @@ export const useVideoStore = defineStore('video', () => {
   const userStore = useUserStore();
 
   const videoList = ref([]);
-
   const video = ref({});
 
+  // for pagination
   const page = ref(1);
-
   const totalPage = ref(1);
+
+  // for search pagination
+  const searchType = ref("");
+  const searchKeyword = ref("");
+  const searchPage = ref(1);
+  const searchTotalPage = ref(1);
 
   /*
   getters
@@ -30,6 +35,12 @@ export const useVideoStore = defineStore('video', () => {
   /*
   actions
   */
+  const clearVideoStore = () => {
+    videoList.value = [];
+    video.value = {};
+    searchPage.value = 1;
+  }
+
   const createVideo = (newVideo) => {
     // 빈 요소 없는지 검증
     for (const key in newVideo) {
@@ -73,6 +84,24 @@ export const useVideoStore = defineStore('video', () => {
       })
   }
 
+  const getVideoListBySearch = (pageNum, searchType, searchKeyword) => {
+    axios({
+      url: `video/search`,
+      method: "GET",
+      params: {
+        type: searchType,
+        page: pageNum,
+        keyword: searchKeyword,
+      },
+    })
+      .then((res) => {
+        videoList.value = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   const getVideo = (videoId) => {
     axios({
       url: `video/${videoId}`,
@@ -91,13 +120,23 @@ export const useVideoStore = defineStore('video', () => {
       })
   }
 
-  const getCount = () => {
+  const getCount = (inputSearchKeyword, inputSearchType) => {
     axios({
       url: `video/count`,
       method: "GET",
+      params: {
+        keyword: inputSearchKeyword,
+        type: inputSearchType,
+      },
     })
       .then((res) => {
-        totalPage.value = Math.ceil(res.data / 6);
+        console.log(res.data)
+        console.log(inputSearchKeyword)
+        if (inputSearchKeyword === undefined && inputSearchType === undefined) {
+        totalPage.value = Math.ceil(res.data / 10);
+        } else {
+          searchTotalPage.value = Math.ceil(res.data / 10);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -167,8 +206,14 @@ export const useVideoStore = defineStore('video', () => {
     isEditor,
     page,
     totalPage,
+    searchType,
+    searchKeyword,
+    searchPage,
+    searchTotalPage,
+    clearVideoStore,
     createVideo,
     getVideoList,
+    getVideoListBySearch,
     getVideo,
     getCount,
     increaseViewCount,
