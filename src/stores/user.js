@@ -85,6 +85,7 @@ export const useUserStore = defineStore('user', () => {
 
   const login = (loginUser) => {
     const Hash = CryptoJS.SHA256(loginUser.password).toString();
+    console.log(Hash)
     axios({
       url: 'user/login',
       method: 'POST',

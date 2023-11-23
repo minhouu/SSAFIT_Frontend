@@ -125,7 +125,7 @@ const router = createRouter({
         },
         {
           // 
-          path: "detail",
+          path: ":recordId(\\d+)",
           name: "RecordDetails",
           component: RecordDetails,
         },

@@ -3,7 +3,7 @@
     <ul class="text-center nav flex-column border border-primary rounded" v-if="userStore.user">
       <li class="nav-item my-2">
         <RouterLink class="nav-link active" to="/record">
-          <h2 class="fw-bold my-3">운동기록</h2>
+          <h2 class="fw-bold mt-3">운동기록</h2>
         </RouterLink> 
       </li>
       <li class="nav-item my-2">

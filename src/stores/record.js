@@ -1,11 +1,12 @@
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { defineStore } from 'pinia'
 import { useUserStore } from './user'
 import axios from '@/util/axios'
 
 export const useRecordStore = defineStore('record', () => {
     const router = useRouter();
+    const route = useRoute();
     
     const userStore = useUserStore();
     
@@ -30,6 +31,9 @@ export const useRecordStore = defineStore('record', () => {
     //detail(운동 상세 정보)를 받아서 한번에 insert할 예정
     //운동 기록 생성
     const createRecord = (record) => {
+      if (confirm("운동 기록을 완료하시겠습니까?") == false) {
+        return;
+      }
       axios({
         url: "record",
         method: "POST",
@@ -40,7 +44,7 @@ export const useRecordStore = defineStore('record', () => {
       })
       .then((res) => {        
         alert("등록 완료");
-        router.push("/record/detail");
+        router.push("/record");
         })
     };
 
@@ -55,9 +59,11 @@ export const useRecordStore = defineStore('record', () => {
         }
       })
       .then((res) => {
+        console.log(res)
+        console.log(exercise)
         alert("수정 완료");
         //수정한 운동기록을 확인하는 페이지로 갔으면 좋겠음
-        router.push("/record/detail");
+        router.push(`/record/${route.params.recordId}`);
       })
       .catch((err) => {
         console.log(err);
@@ -126,7 +132,6 @@ export const useRecordStore = defineStore('record', () => {
     };
     
     const getDetails = (recordId) => {
-      console.log(recordId);
       axios({
         url: `record/${recordId}`,
         method: "GET",
@@ -135,6 +140,7 @@ export const useRecordStore = defineStore('record', () => {
         }
       })
         .then((res) => {
+          console.log(res.data)
           exerciseList.value = res.data;  
         })
         .catch((err) => {
