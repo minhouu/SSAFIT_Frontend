@@ -4,18 +4,25 @@
       <h2 class="fs-2 fw-bold mb-5">{{ userStore.user.nickname }}의 운동 기록</h2>
     </div>
     <div v-if="recordStore.records.length > 0">
-      <table class="table" v-for="(record, index) in recordStore.records" :key="index">
+      <table class="table">
         <tbody>
-          <th scope="col">#</th>
-          <th>
-            <router-link to="/record/detail" @click="recordStore.getDetails(record.recordId)">{{ record.recordDate
-            }}</router-link>
-          </th>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">운동 날짜</th>
+          </tr>
+          <tr v-for="(record, index) in recordStore.records" :key="index">
+            <td scope="col">{{ index + 1 }}</td>
+            <td>
+              <router-link :to="`/record/${record.recordId}`">{{ record.recordDate
+              }}</router-link>
+            </td>
+          </tr>
+
         </tbody>
       </table>
     </div>
-    <div v-else>
-      <h1>기록을 추가해주세요</h1>
+    <div class="text-center my-3" v-else>
+      <h3>기록을 추가해주세요..!</h3>
     </div>
   </div>
   <div v-else>

@@ -41,12 +41,12 @@
     <!-- 등록 버튼을 누르면 일단 정보를 가지고 보여주는 테이블 만들었으면 좋겠음 -->
     <!-- 해당 정보는 배열안에 저장하면서 보관 -->
     <div class="container" v-if="startEditingRecord">
-      <h2 class="my-4">세트 정보를 입력해 주세요</h2>
+      <h2 class="my-4">세트 정보</h2>
       <fieldset class="rounded border p-3 mb-3">
         <!-- recordId를 보여주면서? -->
         <!-- 운동 이름을 고르면 그 순서에 맞는 숫자를 운동 ID로 받아옴 -->
         <div class="mb-3">
-          <label for="exId" class="form-label">운동선택</label>
+          <label for="exId" class="form-label">운동</label>
           <select class="form-select" v-model="detail.exId">
             <option value="1">스쿼트</option>
             <option value="2">점프 스쿼트</option>
@@ -75,15 +75,15 @@
         </div>
         <div class="mb-3">
           <label for="setNum" class="form-label">세트</label>
-          <input type="number" id="setNum" v-model="detail.setNum" class="form-control" />
+          <input type="number" id="setNum" v-model="detail.setNum" class="form-control" placeholder="해당 운동이 몇 번째 세트인지 입력해주세요 ex : 1 (세트)"/>
         </div>
         <div class="mb-3">
           <label for="weight" class="form-label">무게</label>
-          <input type="number" id="weight" v-model="detail.weight" class="form-control" />
+          <input type="number" id="weight" v-model="detail.weight" class="form-control" placeholder="운동을 진행한 무게를 입력해주세요 ex : 100 (kg)"/>
         </div>
         <div class="mb-3">
           <label for="reps" class="form-label">횟수</label>
-          <input type="number" id="reps" v-model="detail.reps" class="form-control" /><br />
+          <input type="number" id="reps" v-model="detail.reps" class="form-control" placeholder="운동을 진행한 횟수를 입력해주세요 ex : 10 (회)"/>
         </div>
         <div class="d-flex justify-content-end">
           <button class="btn btn-primary" @click="submitUserExerciseSet">등록하기</button>
