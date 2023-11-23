@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import axios from '@/util/axios'
+import CryptoJS from 'crypto-js';
 
 export const useUserStore = defineStore('user', () => {
   const router = useRouter();
@@ -36,6 +37,7 @@ export const useUserStore = defineStore('user', () => {
       .then((res) => {
         createUser(newUser);
         alert("회원가입이 완료되었습니다. 새로 로그인 해주세요.");
+        router.push("/");
       })
       .catch((err) => {
         console.log(err);
@@ -44,21 +46,25 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const createUser = (newUser) => {
+    const Hash = CryptoJS.SHA256(newUser.password).toString();
     axios({
       url: "user/join",
       method: "POST",
-      data: newUser
+      data: {
+        id: newUser.id, 
+        password: Hash,
+        nickname: newUser.nickname,
+        userType: newUser.userType,
+      }
     })
-      .then(() => {
-        router.push("/");
+      .then((res) => {
+        console.log(res)
       })
       .catch((err) => {
         console.log(err);
         alert("등록 실패");
       });
   };
-  
-  
 
   // api 추가 필요함
   const deleteUser = (user) => {
@@ -78,10 +84,14 @@ export const useUserStore = defineStore('user', () => {
   };
 
   const login = (loginUser) => {
+    const Hash = CryptoJS.SHA256(loginUser.password).toString();
     axios({
       url: 'user/login',
       method: 'POST',
-      data: loginUser
+      data: {
+        id: loginUser.id, 
+        password: Hash,
+      }
     })
       .then((res) => {
         user.value = { id: loginUser.id };
