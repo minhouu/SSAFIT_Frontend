@@ -57,6 +57,8 @@ export const useUserStore = defineStore('user', () => {
         alert("등록 실패");
       });
   };
+  
+  
 
   // api 추가 필요함
   const deleteUser = (user) => {
