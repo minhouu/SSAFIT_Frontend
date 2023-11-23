@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2>유저 상세정보</h2>
+    <h2 class="fs-2 fw-bold mb-4">유저 상세정보</h2>
     <fieldset>
       <div class="mb-4">
         <label for="user-id" class="form-label">아이디</label>

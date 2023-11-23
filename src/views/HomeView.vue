@@ -7,7 +7,6 @@
         <span>에 온 걸 환영한다구 ~</span>
       </h1>
       <img class="img-fluid rounded" src="@\assets\home.png" />
-      <div>HOW TO USE SSAFIT</div>
       <br />
 
     </div>

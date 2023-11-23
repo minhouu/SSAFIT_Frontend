@@ -26,6 +26,7 @@ import VideoView from "@/views/VideoView.vue";
 import VideoList from "@/components/video/VideoList.vue";
 import VideoRegist from "@/components/video/VideoRegist.vue";
 import VideoDetail from "@/components/video/VideoDetail.vue";
+import VideoSearch from "@/components/video/VideoSearch.vue";
 
 import ReviewDetail from "@/components/video/review/ReviewDetail.vue";
 import ReviewRegist from "@/components/video/review/ReviewRegist.vue";
@@ -94,7 +95,7 @@ const router = createRouter({
       children: [
         {
           //record의 모든 정보
-          path: "list",
+          path: "",
           name: "RecordList",
           component: RecordList,
         },
@@ -149,6 +150,11 @@ const router = createRouter({
           path: ":id(\\d+)",
           name: "VideoDetail",
           component: VideoDetail,
+        },
+        {
+          path: "search",
+          name: "VideoSearch",
+          component: VideoSearch,
         }
       ],
     },

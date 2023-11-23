@@ -68,9 +68,13 @@
 
     </div>
 
-    <div v-else>등록된 게시글이 없습니다.</div>
+    <div class="container" v-else>
+      <h2 class="fs-3 fw-bold">등록된 게시글이 없습니다.</h2>
+    </div>
   </div>
-  <div v-else>로그인 후 이용해주세요</div>
+  <div class="container" v-else>
+    <h2 class="fs-3 fw-bold">로그인 후 이용해주세요</h2>
+  </div>
 </template>
 
 <script setup>

@@ -107,6 +107,9 @@ export const useRecordStore = defineStore('record', () => {
     // 운동 기록 정보 조회
     // 0. 모든 기록 가져오기
     const getAllExerciseList = () => {
+        if (userStore.user === null) {
+          return;
+        }
         axios({
           url: `record`,
           method: "GET",
