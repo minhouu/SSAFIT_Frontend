@@ -157,7 +157,7 @@ export const useBoardStore = defineStore('board', () => {
     })
       .then((res) => {
         alert("수정 완료");
-        router.push("/board");
+        router.go(0);
       })
       .catch((err) => {
         console.log(err);

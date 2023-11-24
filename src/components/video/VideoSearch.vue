@@ -26,7 +26,7 @@
         <tbody>
           <tr v-for="(video, index) in videoStore.videoList" :key="index">
             <td>
-              <RouterLink class="nav-link active" :to="`/board/${video.videoId}`">
+              <RouterLink class="nav-link active" :to="`/video/${video.videoId}`">
                 {{ video.title }}
               </RouterLink>
             </td>

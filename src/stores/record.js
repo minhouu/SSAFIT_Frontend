@@ -83,7 +83,7 @@ export const useRecordStore = defineStore('record', () => {
         .then((res) => {
           alert("삭제 완료");
           //전체 운동을 담고있던 record에 가서 내 운동 세트가 지워졌는지 확인
-          router.push("/record/exercise");
+          router.go(0);
         })
         .catch((err) => {
           console.log(err);

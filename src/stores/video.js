@@ -133,7 +133,7 @@ export const useVideoStore = defineStore('video', () => {
         console.log(res.data)
         console.log(inputSearchKeyword)
         if (inputSearchKeyword === undefined && inputSearchType === undefined) {
-        totalPage.value = Math.ceil(res.data / 10);
+          totalPage.value = Math.ceil(res.data / 10);
         } else {
           searchTotalPage.value = Math.ceil(res.data / 10);
         }
@@ -156,24 +156,27 @@ export const useVideoStore = defineStore('video', () => {
       });
   }
 
-  const updateVideo = (video) => {
-    console.log(newVideo)
+  const updateVideo = () => {
+    console.log(video.value)
+    // // 빈 요소 없는지 검증
+    // for (const key in video.value) {
+    //   if (video.value[key] == "") {
+    //     console.log(key)
+    //     return alert("모든 항목을 입력해주세요.");
+    //   }
+    // }
 
-    // 빈 요소 없는지 검증
-    for (const key in video) {
-      if (video[key] == "") return alert("모든 항목을 입력해주세요.");
-    }
 
     // url에서 videoKey만 추출
     const regex = /[?&]v=([^?&]+)/;
-    const key = newVideo.url.match(regex);
+    const key = video.value.url.match(regex);
     if (!key || key[1].length !== 11) return alert("유효하지 않은 URL입니다.");
-    video.videoKey = key[1];
+    video.value.videoKey = key[1];
 
     axios({
       url: `video`,
       method: "PUT",
-      data: video,
+      data: video.value,
     })
       .then((res) => {
         alert("수정 완료");
