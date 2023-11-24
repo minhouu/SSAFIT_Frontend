@@ -15,9 +15,9 @@
               <div>조회수 : {{ boardStore.article.viewCnt }}회</div>
             </div>
             <div class="col-2 d-flex justify-content-center">
-              <button class="btn btn-primary btn-sm m-2" v-if="boardStore.isEditor" @click="changeEditing">수정하기</button>
-              <button class="btn btn-primary btn-sm m-2" v-if="boardStore.isEditor"
-                @click="boardStore.deleteArticle()">삭제하기</button>
+              <button class="btn btn-primary m-2" v-if="boardStore.isEditor" @click="changeEditing">수정</button>
+              <button class="btn btn-primary m-2" v-if="boardStore.isEditor"
+                @click="boardStore.deleteArticle()">삭제</button>
             </div>
           </div>
         </div>
